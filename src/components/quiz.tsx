@@ -1,17 +1,19 @@
 "use client";
 
 import { useState, useMemo, useEffect } from 'react';
-import { quizData } from '@/lib/quiz-data';
+import { quizData, type Question } from '@/lib/quiz-data';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { CheckCircle2, XCircle, Lightbulb, RotateCw, Trophy } from 'lucide-react';
+import { CheckCircle2, XCircle, Lightbulb, RotateCw, Trophy, Sparkles, BrainCircuit } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Celebration from './celebration';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { explainAnswer } from '@/ai/flows/explain-answer-flow';
+import type { ExplainAnswerInput } from '@/ai/flows/explain-answer-types';
 
 // Group questions by section
 const sections = quizData.reduce((acc, question) => {
@@ -38,6 +40,48 @@ const getInitialState = <T,>(key: string, defaultValue: T): T => {
   }
 };
 
+const AIExplanation = ({ question, userAnswer }: { question: Question, userAnswer: string }) => {
+  const [explanation, setExplanation] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleExplain = async () => {
+    setIsLoading(true);
+    setExplanation('');
+
+    const input: ExplainAnswerInput = {
+      question: question.question,
+      options: question.options,
+      userAnswer: userAnswer || "Not answered",
+      correctAnswer: question.correctAnswer,
+      originalExplanation: question.explanation,
+    };
+
+    try {
+      const result = await explainAnswer(input);
+      setExplanation(result.explanation);
+    } catch (e) {
+      console.error(e);
+      setExplanation("Sorry, I wasn't able to generate an explanation at this time.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <div className="mt-4">
+      <Button onClick={handleExplain} disabled={isLoading} variant="outline" size="sm">
+        {isLoading ? <Sparkles className="mr-2 h-4 w-4 animate-spin" /> : <BrainCircuit className="mr-2 h-4 w-4" />}
+        {isLoading ? 'Thinking...' : 'Ask AI for a Better Explanation'}
+      </Button>
+      {explanation && (
+        <div className="mt-4 p-4 bg-muted/50 rounded-lg border">
+          <p className="text-muted-foreground">{explanation}</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
 
 export function Quiz() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
@@ -53,19 +97,28 @@ export function Quiz() {
 
   useEffect(() => {
     if (isHydrated) {
-      setCurrentQuestionIndex(getInitialState('quizCurrentQuestionIndex', 0));
-      setSelectedAnswers(getInitialState('quizSelectedAnswers', {}));
-      setIsFinished(getInitialState('quizIsFinished', false));
-      setScore(getInitialState('quizScore', 0));
+      const savedIndex = getInitialState('quizCurrentQuestionIndex', 0);
+      const savedAnswers = getInitialState('quizSelectedAnswers', {});
+      const savedFinished = getInitialState('quizIsFinished', false);
+      const savedScore = getInitialState('quizScore', 0);
+
+      setCurrentQuestionIndex(savedIndex);
+      setSelectedAnswers(savedAnswers);
+      setIsFinished(savedFinished);
+      setScore(savedScore);
     }
   }, [isHydrated]);
 
   useEffect(() => {
     if (!isHydrated) return;
-    window.localStorage.setItem('quizCurrentQuestionIndex', JSON.stringify(currentQuestionIndex));
-    window.localStorage.setItem('quizSelectedAnswers', JSON.stringify(selectedAnswers));
-    window.localStorage.setItem('quizIsFinished', JSON.stringify(isFinished));
-    window.localStorage.setItem('quizScore', JSON.stringify(score));
+    try {
+      window.localStorage.setItem('quizCurrentQuestionIndex', JSON.stringify(currentQuestionIndex));
+      window.localStorage.setItem('quizSelectedAnswers', JSON.stringify(selectedAnswers));
+      window.localStorage.setItem('quizIsFinished', JSON.stringify(isFinished));
+      window.localStorage.setItem('quizScore', JSON.stringify(score));
+    } catch (error) {
+      console.warn('Could not save quiz state to localStorage:', error);
+    }
   }, [currentQuestionIndex, selectedAnswers, isFinished, score, isHydrated]);
   
   const currentQuestion = useMemo(() => quizData[currentQuestionIndex], [currentQuestionIndex]);
@@ -73,15 +126,18 @@ export function Quiz() {
 
   const handleAnswerSelect = (answer: string) => {
     if (showFeedback) return;
-    setSelectedAnswers(prev => ({ ...prev, [currentQuestionIndex]: answer }));
-  };
+    const newAnswers = { ...selectedAnswers, [currentQuestionIndex]: answer };
+    setSelectedAnswers(newAnswers);
 
-  const handleSubmit = () => {
-    if (!selectedAnswer) return;
-
-    const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
+    const isCorrect = answer === currentQuestion.correctAnswer;
     if (isCorrect) {
       setScore(prev => prev + 1);
+    } else {
+      // If user changes from a correct to incorrect answer before submitting
+      const previouslySelected = selectedAnswers[currentQuestionIndex];
+      if (previouslySelected === currentQuestion.correctAnswer && previouslySelected !== answer) {
+        setScore(prev => prev -1);
+      }
     }
     setShowFeedback(true);
 
@@ -102,10 +158,14 @@ export function Quiz() {
     setScore(0);
     setShowFeedback(false);
     if (typeof window !== 'undefined') {
-      window.localStorage.removeItem('quizCurrentQuestionIndex');
-      window.localStorage.removeItem('quizSelectedAnswers');
-      window.localStorage.removeItem('quizIsFinished');
-      window.localStorage.removeItem('quizScore');
+      try {
+        window.localStorage.removeItem('quizCurrentQuestionIndex');
+        window.localStorage.removeItem('quizSelectedAnswers');
+        window.localStorage.removeItem('quizIsFinished');
+        window.localStorage.removeItem('quizScore');
+      } catch (error) {
+        console.warn('Could not remove quiz state from localStorage:', error);
+      }
     }
   };
   
@@ -141,8 +201,6 @@ export function Quiz() {
   if (isFinished) {
     const isGoodScore = scorePercentage >= 80;
     return (
-      <div className="relative group">
-        <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-accent rounded-lg blur opacity-50 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
         <Card className="relative w-full max-w-4xl shadow-2xl">
           <CardHeader className="text-center p-8">
             <CardTitle className="text-3xl font-bold">Quiz Complete!</CardTitle>
@@ -185,9 +243,10 @@ export function Quiz() {
                   </AccordionTrigger>
                   <AccordionContent className="p-2">
                     <Accordion type="single" collapsible className="w-full">
-                      {sections[sectionName].map((question) => {
-                        const userAnswer = selectedAnswers[quizData.indexOf(question)];
-                        const isCorrect = userAnswer === question.correctAnswer;
+                      {sections[sectionName].map((question, index) => {
+                         const questionGlobalIndex = quizData.findIndex(q => q.id === question.id);
+                         const userAnswer = selectedAnswers[questionGlobalIndex];
+                         const isCorrect = userAnswer === question.correctAnswer;
                         return (
                           <AccordionItem value={`item-${question.id}`} key={question.id} className="border-b-0">
                             <AccordionTrigger className="text-left hover:no-underline text-base">
@@ -197,12 +256,13 @@ export function Quiz() {
                               </div>
                             </AccordionTrigger>
                             <AccordionContent className="space-y-4">
-                              <p className={cn("p-3 rounded-md", isCorrect ? "bg-green-500/20" : "bg-red-500/20")}>Your answer: {userAnswer}</p>
+                              <p className={cn("p-3 rounded-md", isCorrect ? "bg-green-500/20" : "bg-red-500/20")}>Your answer: {userAnswer || 'Not Answered'}</p>
                               {!isCorrect && <p className="p-3 rounded-md bg-green-500/20">Correct answer: {question.correctAnswer}</p>}
                               <div className="flex items-start gap-3 p-3 bg-card rounded-md">
                                 <Lightbulb className="h-5 w-5 text-primary flex-shrink-0 mt-1" />
                                 <p className="text-muted-foreground">{question.explanation}</p>
                               </div>
+                               <AIExplanation question={question} userAnswer={userAnswer} />
                             </AccordionContent>
                           </AccordionItem>
                         );
@@ -219,7 +279,6 @@ export function Quiz() {
             </Button>
           </CardFooter>
         </Card>
-      </div>
     );
   }
 
@@ -239,38 +298,36 @@ export function Quiz() {
           value={selectedAnswer}
           onValueChange={handleAnswerSelect}
           className="space-y-3"
-          disabled={showFeedback}
         >
           {currentQuestion.options.map((option, index) => {
             const isSelected = selectedAnswer === option;
             const isCorrect = currentQuestion.correctAnswer === option;
             const id = `q${currentQuestion.id}-opt${index}`;
             return (
-              <div key={index} className="flex items-center">
-                <RadioGroupItem
-                  value={option}
-                  id={id}
-                  className="mr-4"
-                />
-                <Label
+              <Label
+                  key={id}
                   htmlFor={id}
                   className={cn(
-                    "flex-1 flex items-center p-4 rounded-lg border-2 transition-all cursor-pointer bg-muted/30 hover:bg-muted/70",
+                    "flex items-center p-4 rounded-lg border-2 transition-all cursor-pointer bg-muted/30 hover:bg-muted/70",
                     isSelected && "border-primary bg-primary/10",
                     showFeedback && isSelected && !isCorrect && "bg-red-500/20 border-red-500/50 text-foreground animate-in shake",
                     showFeedback && isCorrect && "bg-green-500/20 border-green-500/50 text-foreground animate-in pulse",
                   )}
                 >
+                  <RadioGroupItem
+                    value={option}
+                    id={id}
+                    className="mr-4"
+                  />
                   <span className="flex-1">{option}</span>
                 </Label>
-              </div>
             );
           })}
         </RadioGroup>
       </CardContent>
       <CardFooter className="justify-between items-center p-6">
         <p className="text-sm text-muted-foreground">Question {currentQuestionIndex + 1} of {quizData.length}</p>
-        <Button onClick={handleSubmit} disabled={!selectedAnswer || showFeedback} size="lg">
+        <Button onClick={() => {}} disabled={true} size="lg">
           {currentQuestionIndex === quizData.length - 1 ? 'Finish' : 'Submit Answer'}
         </Button>
       </CardFooter>
