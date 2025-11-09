@@ -8,8 +8,9 @@ import {
 import { Button } from '@/components/ui/button';
 import { useFirebase } from '@/firebase';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const GoogleIcon = () => (
   <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
@@ -38,7 +39,7 @@ const AppleIcon = () => (
     </svg>
 )
 
-export default function LoginPage() {
+function LoginComponent() {
   const { auth, firestore, user, isUserLoading } = useFirebase();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -121,4 +122,25 @@ export default function LoginPage() {
       </div>
     </div>
   );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+        <div className="flex items-center justify-center min-h-[calc(100vh-200px)]">
+            <div className="w-full max-w-sm p-8 space-y-4 bg-card rounded-lg shadow-lg">
+                <div className="text-center">
+                <Skeleton className="h-8 w-48 mx-auto mb-2" />
+                <Skeleton className="h-5 w-64 mx-auto" />
+                </div>
+                <div className="space-y-3">
+                    <Skeleton className="h-10 w-full" />
+                    <Skeleton className="h-10 w-full" />
+                </div>
+            </div>
+        </div>
+    }>
+      <LoginComponent />
+    </Suspense>
+  )
 }
