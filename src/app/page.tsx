@@ -2,7 +2,7 @@ import { Quiz } from "@/components/quiz";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center p-4 sm:p-8 md:p-12">
+    <div className="flex flex-col items-center p-4 sm:p-8 md:p-12">
       <header className="w-full max-w-4xl mb-8 flex items-center justify-center gap-4">
         <div className="w-10 h-10 text-yellow-400">
           <svg
@@ -25,6 +25,6 @@ export default function Home() {
         </p>
       </div>
       <Quiz />
-    </main>
+    </div>
   );
 }
