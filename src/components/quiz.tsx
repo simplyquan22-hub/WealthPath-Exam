@@ -48,12 +48,17 @@ export function Quiz() {
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
-    setCurrentQuestionIndex(getInitialState('quizCurrentQuestionIndex', 0));
-    setSelectedAnswers(getInitialState('quizSelectedAnswers', {}));
-    setIsFinished(getInitialState('quizIsFinished', false));
-    setScore(getInitialState('quizScore', 0));
     setIsHydrated(true);
   }, []);
+
+  useEffect(() => {
+    if (isHydrated) {
+      setCurrentQuestionIndex(getInitialState('quizCurrentQuestionIndex', 0));
+      setSelectedAnswers(getInitialState('quizSelectedAnswers', {}));
+      setIsFinished(getInitialState('quizIsFinished', false));
+      setScore(getInitialState('quizScore', 0));
+    }
+  }, [isHydrated]);
 
   useEffect(() => {
     if (!isHydrated) return;
@@ -136,82 +141,85 @@ export function Quiz() {
   if (isFinished) {
     const isGoodScore = scorePercentage >= 80;
     return (
-      <Card className="w-full max-w-4xl shadow-2xl">
-        <CardHeader className="text-center p-8">
-          <CardTitle className="text-3xl font-bold">Quiz Complete!</CardTitle>
-          <CardDescription className="text-lg">You scored {score} out of {quizData.length}</CardDescription>
-          <div className="relative pt-4">
-            <Progress value={scorePercentage} className="h-4" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-bold text-primary-foreground text-sm">{Math.round(scorePercentage)}%</div>
-          </div>
-        </CardHeader>
-        <CardContent className="p-6">
-          <div className="my-6">
-            {isGoodScore ? (
-              <Alert className="border-accent bg-accent/30 text-accent-foreground">
-                <Trophy className="h-5 w-5 text-primary" />
-                <AlertTitle className="font-bold text-lg">
-                  Excellent work!
-                </AlertTitle>
-                <AlertDescription>
-                  You have a strong understanding of these financial concepts. Now it's time to go apply your knowledge and build your wealth!
-                </AlertDescription>
-              </Alert>
-            ) : (
-              <Alert variant="destructive">
-                <RotateCw className="h-5 w-5" />
-                <AlertTitle className="font-bold text-lg">
-                  Keep learning!
-                </AlertTitle>
-                <AlertDescription>
-                  Don't worry, building financial literacy is a journey. We recommend you retake the quiz or go back to the WealthPath courses to review the material.
-                </AlertDescription>
-              </Alert>
-            )}
-          </div>
-          <h3 className="text-xl font-semibold mb-4 text-center">Review Your Answers</h3>
-          <Accordion type="multiple" className="w-full">
-            {sectionNames.map(sectionName => (
-              <AccordionItem value={sectionName} key={sectionName} className="bg-muted/50 rounded-lg mb-2">
-                <AccordionTrigger className="text-lg font-semibold hover:no-underline px-4">
-                  {sectionName}
-                </AccordionTrigger>
-                <AccordionContent className="p-2">
-                  <Accordion type="single" collapsible className="w-full">
-                    {sections[sectionName].map((question) => {
-                      const userAnswer = selectedAnswers[quizData.indexOf(question)];
-                      const isCorrect = userAnswer === question.correctAnswer;
-                      return (
-                        <AccordionItem value={`item-${question.id}`} key={question.id} className="border-b-0">
-                          <AccordionTrigger className="text-left hover:no-underline text-base">
-                            <div className="flex items-center gap-4 w-full">
-                              {isCorrect ? <CheckCircle2 className="text-green-500 h-5 w-5 flex-shrink-0" /> : <XCircle className="text-red-500 h-5 w-5 flex-shrink-0" />}
-                              <span className="flex-1">{question.question}</span>
-                            </div>
-                          </AccordionTrigger>
-                          <AccordionContent className="space-y-4">
-                            <p className={cn("p-3 rounded-md", isCorrect ? "bg-green-500/20" : "bg-red-500/20")}>Your answer: {userAnswer}</p>
-                            {!isCorrect && <p className="p-3 rounded-md bg-green-500/20">Correct answer: {question.correctAnswer}</p>}
-                            <div className="flex items-start gap-3 p-3 bg-card rounded-md">
-                              <Lightbulb className="h-5 w-5 text-primary flex-shrink-0 mt-1" />
-                              <p className="text-muted-foreground">{question.explanation}</p>
-                            </div>
-                          </AccordionContent>
-                        </AccordionItem>
-                      );
-                    })}
-                  </Accordion>
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
-        </CardContent>
-        <CardFooter className="justify-center p-6">
-          <Button onClick={handleReset} size="lg">
-            <RotateCw className="mr-2 h-4 w-4" /> Try Again
-          </Button>
-        </CardFooter>
-      </Card>
+      <div className="relative group">
+        <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-accent rounded-lg blur opacity-50 group-hover:opacity-75 transition duration-1000 group-hover:duration-200"></div>
+        <Card className="relative w-full max-w-4xl shadow-2xl">
+          <CardHeader className="text-center p-8">
+            <CardTitle className="text-3xl font-bold">Quiz Complete!</CardTitle>
+            <CardDescription className="text-lg">You scored {score} out of {quizData.length}</CardDescription>
+            <div className="relative pt-4">
+              <Progress value={scorePercentage} className="h-4" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-bold text-primary-foreground text-sm">{Math.round(scorePercentage)}%</div>
+            </div>
+          </CardHeader>
+          <CardContent className="p-6">
+            <div className="my-6">
+              {isGoodScore ? (
+                <Alert className="border-accent bg-accent/30 text-accent-foreground">
+                  <Trophy className="h-5 w-5 text-primary" />
+                  <AlertTitle className="font-bold text-lg">
+                    Excellent work!
+                  </AlertTitle>
+                  <AlertDescription>
+                    You have a strong understanding of these financial concepts. Now it's time to go apply your knowledge and build your wealth!
+                  </AlertDescription>
+                </Alert>
+              ) : (
+                <Alert variant="destructive">
+                  <RotateCw className="h-5 w-5" />
+                  <AlertTitle className="font-bold text-lg">
+                    Keep learning!
+                  </AlertTitle>
+                  <AlertDescription>
+                    Don't worry, building financial literacy is a journey. We recommend you retake the quiz or go back to the WealthPath courses to review the material.
+                  </AlertDescription>
+                </Alert>
+              )}
+            </div>
+            <h3 className="text-xl font-semibold mb-4 text-center">Review Your Answers</h3>
+            <Accordion type="multiple" className="w-full">
+              {sectionNames.map(sectionName => (
+                <AccordionItem value={sectionName} key={sectionName} className="bg-muted/50 rounded-lg mb-2">
+                  <AccordionTrigger className="text-lg font-semibold hover:no-underline px-4">
+                    {sectionName}
+                  </AccordionTrigger>
+                  <AccordionContent className="p-2">
+                    <Accordion type="single" collapsible className="w-full">
+                      {sections[sectionName].map((question) => {
+                        const userAnswer = selectedAnswers[quizData.indexOf(question)];
+                        const isCorrect = userAnswer === question.correctAnswer;
+                        return (
+                          <AccordionItem value={`item-${question.id}`} key={question.id} className="border-b-0">
+                            <AccordionTrigger className="text-left hover:no-underline text-base">
+                              <div className="flex items-center gap-4 w-full">
+                                {isCorrect ? <CheckCircle2 className="text-green-500 h-5 w-5 flex-shrink-0" /> : <XCircle className="text-red-500 h-5 w-5 flex-shrink-0" />}
+                                <span className="flex-1">{question.question}</span>
+                              </div>
+                            </AccordionTrigger>
+                            <AccordionContent className="space-y-4">
+                              <p className={cn("p-3 rounded-md", isCorrect ? "bg-green-500/20" : "bg-red-500/20")}>Your answer: {userAnswer}</p>
+                              {!isCorrect && <p className="p-3 rounded-md bg-green-500/20">Correct answer: {question.correctAnswer}</p>}
+                              <div className="flex items-start gap-3 p-3 bg-card rounded-md">
+                                <Lightbulb className="h-5 w-5 text-primary flex-shrink-0 mt-1" />
+                                <p className="text-muted-foreground">{question.explanation}</p>
+                              </div>
+                            </AccordionContent>
+                          </AccordionItem>
+                        );
+                      })}
+                    </Accordion>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </CardContent>
+          <CardFooter className="justify-center p-6">
+            <Button onClick={handleReset} size="lg">
+              <RotateCw className="mr-2 h-4 w-4" /> Try Again
+            </Button>
+          </CardFooter>
+        </Card>
+      </div>
     );
   }
 

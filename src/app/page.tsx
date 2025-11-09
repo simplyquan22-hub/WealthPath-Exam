@@ -14,21 +14,28 @@ export default function Home() {
         </h1>
         <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Test your financial literacy and take the first step on your journey to financial freedom.</p>
        </div>
-      <Quiz />
-      <Card className="w-full max-w-2xl shadow-lg bg-card/50 backdrop-blur-sm">
-        <CardContent className="p-6 text-center">
-          <h2 className="text-xl font-semibold mb-2">Need to Review?</h2>
-          <p className="mb-4 text-muted-foreground">
-            Head back to our course PDF to brush up on your knowledge.
-          </p>
-          <Button asChild>
-            <Link href="https://docs.google.com/document/d/1-xCGlcx5ap2YinQ21jWvljQ8uWdof6NqCzATqJzfcJ4/edit?usp=drivesdk" target="_blank">
-              <BookOpen className="mr-2 h-4 w-4" />
-              Open Course PDF
-            </Link>
-          </Button>
-        </CardContent>
-      </Card>
+      <div className="relative group">
+        <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-accent rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+        <Quiz />
+      </div>
+
+      <div className="relative group w-full max-w-2xl">
+        <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-accent rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+        <Card className="relative w-full shadow-lg bg-card/50 backdrop-blur-sm">
+          <CardContent className="p-6 text-center">
+            <h2 className="text-xl font-semibold mb-2">Need to Review?</h2>
+            <p className="mb-4 text-muted-foreground">
+              Head back to our course PDF to brush up on your knowledge.
+            </p>
+            <Button asChild>
+              <Link href="https://docs.google.com/document/d/1-xCGlcx5ap2YinQ21jWvljQ8uWdof6NqCzATqJzfcJ4/edit?usp=drivesdk" target="_blank">
+                <BookOpen className="mr-2 h-4 w-4" />
+                Open Course PDF
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
