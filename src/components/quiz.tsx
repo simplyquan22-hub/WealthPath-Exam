@@ -113,6 +113,38 @@ export function Quiz() {
   const currentQuestion = useMemo(() => quizData[currentQuestionIndex], [currentQuestionIndex]);
   const selectedAnswer = selectedAnswers[currentQuestionIndex];
 
+    const finalScore = useMemo(() => {
+    if (!isFinished) return 0;
+    return quizData.reduce((acc, question, index) => {
+      return selectedAnswers[index] === question.correctAnswer ? acc + 1 : acc;
+    }, 0);
+  }, [isFinished, selectedAnswers]);
+
+  const weakestSection = useMemo(() => {
+    if (!isFinished) return null;
+
+    const incorrectAnswersBySection: Record<string, number> = {};
+
+    quizData.forEach((question, index) => {
+      if (selectedAnswers[index] !== question.correctAnswer) {
+        const section = question.section || 'General';
+        incorrectAnswersBySection[section] = (incorrectAnswersBySection[section] || 0) + 1;
+      }
+    });
+
+    let maxIncorrect = 0;
+    let worstSection = '';
+
+    for (const section in incorrectAnswersBySection) {
+      if (incorrectAnswersBySection[section] > maxIncorrect) {
+        maxIncorrect = incorrectAnswersBySection[section];
+        worstSection = section;
+      }
+    }
+    
+    return maxIncorrect >= 2 ? worstSection : null;
+  }, [isFinished, selectedAnswers]);
+
   const handleAnswerSelect = (answer: string) => {
     if (showFeedback) return;
     setSelectedAnswers({ ...selectedAnswers, [currentQuestionIndex]: answer });
@@ -132,14 +164,6 @@ export function Quiz() {
       }
     }, 1200); // Wait for feedback animation
   };
-
-  // Calculate score once at the end
-  const finalScore = useMemo(() => {
-    if (!isFinished) return 0;
-    return quizData.reduce((acc, question, index) => {
-      return selectedAnswers[index] === question.correctAnswer ? acc + 1 : acc;
-    }, 0);
-  }, [isFinished, selectedAnswers]);
 
   useEffect(() => {
     const saveHistory = async () => {
@@ -173,30 +197,6 @@ export function Quiz() {
   const quizProgress = ((isFinished ? quizData.length : currentQuestionIndex) / quizData.length) * 100;
   const isCurrentAnswerCorrect = showFeedback && selectedAnswer === currentQuestion.correctAnswer;
   
-  const weakestSection = useMemo(() => {
-    if (!isFinished) return null;
-
-    const incorrectAnswersBySection: Record<string, number> = {};
-
-    quizData.forEach((question, index) => {
-      if (selectedAnswers[index] !== question.correctAnswer) {
-        const section = question.section || 'General';
-        incorrectAnswersBySection[section] = (incorrectAnswersBySection[section] || 0) + 1;
-      }
-    });
-
-    let maxIncorrect = 0;
-    let worstSection = '';
-
-    for (const section in incorrectAnswersBySection) {
-      if (incorrectAnswersBySection[section] > maxIncorrect) {
-        maxIncorrect = incorrectAnswersBySection[section];
-        worstSection = section;
-      }
-    }
-    
-    return maxIncorrect >= 2 ? worstSection : null;
-  }, [isFinished, selectedAnswers]);
 
   if (isFinished) {
     const isGoodScore = scorePercentage >= 80;
@@ -210,7 +210,9 @@ export function Quiz() {
             ) : (
               <RotateCw className="mx-auto h-16 w-16 text-muted-foreground animate-in zoom-in-50" />
             )}
-            <CardTitle className="text-3xl font-bold mt-4">{isGoodScore ? "Excellent Work!" : "Keep Learning!"}</CardTitle>
+            <CardTitle className="text-3xl font-bold mt-4">
+              {isGoodScore ? "Congratulations! Fantastic work!" : "Keep Learning!"}
+            </CardTitle>
             <CardDescription className="text-lg">You scored {finalScore} out of {quizData.length}</CardDescription>
             <div className="relative pt-4 max-w-sm mx-auto">
               <Progress value={scorePercentage} className={cn("h-4", isGoodScore ? "" : "bg-destructive/30")} />
@@ -218,7 +220,7 @@ export function Quiz() {
             </div>
              <p className="text-muted-foreground mt-4 text-base max-w-xl mx-auto">
               {isGoodScore 
-                ? "You have a strong understanding of these financial concepts. Keep building on this knowledge!"
+                ? "You have a solid understanding of these financial concepts. Keep up the great work and continue building on this knowledge!"
                 : "Building financial literacy is a journey. Review your answers below and try again!"
               }
             </p>
