@@ -172,32 +172,34 @@ export function Quiz() {
   const scorePercentage = (finalScore / quizData.length) * 100;
   const quizProgress = ((isFinished ? quizData.length : currentQuestionIndex) / quizData.length) * 100;
   const isCurrentAnswerCorrect = showFeedback && selectedAnswer === currentQuestion.correctAnswer;
+  
+  const weakestSection = useMemo(() => {
+    if (!isFinished) return null;
+
+    const incorrectAnswersBySection: Record<string, number> = {};
+
+    quizData.forEach((question, index) => {
+      if (selectedAnswers[index] !== question.correctAnswer) {
+        const section = question.section || 'General';
+        incorrectAnswersBySection[section] = (incorrectAnswersBySection[section] || 0) + 1;
+      }
+    });
+
+    let maxIncorrect = 0;
+    let worstSection = '';
+
+    for (const section in incorrectAnswersBySection) {
+      if (incorrectAnswersBySection[section] > maxIncorrect) {
+        maxIncorrect = incorrectAnswersBySection[section];
+        worstSection = section;
+      }
+    }
+    
+    return maxIncorrect >= 2 ? worstSection : null;
+  }, [isFinished, selectedAnswers]);
 
   if (isFinished) {
     const isGoodScore = scorePercentage >= 80;
-
-    const weakestSection = useMemo(() => {
-      const incorrectAnswersBySection: Record<string, number> = {};
-
-      quizData.forEach((question, index) => {
-        if (selectedAnswers[index] !== question.correctAnswer) {
-          const section = question.section || 'General';
-          incorrectAnswersBySection[section] = (incorrectAnswersBySection[section] || 0) + 1;
-        }
-      });
-
-      let maxIncorrect = 0;
-      let worstSection = '';
-
-      for (const section in incorrectAnswersBySection) {
-        if (incorrectAnswersBySection[section] > maxIncorrect) {
-          maxIncorrect = incorrectAnswersBySection[section];
-          worstSection = section;
-        }
-      }
-      
-      return maxIncorrect >= 2 ? worstSection : null;
-    }, [selectedAnswers]);
 
     return (
         <Card className="relative w-full max-w-4xl shadow-2xl overflow-hidden">
