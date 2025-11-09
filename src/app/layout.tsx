@@ -1,6 +1,19 @@
 import type {Metadata} from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster";
+import { Inter, Nunito } from 'next/font/google';
+import { cn } from '@/lib/utils';
+
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+});
+
+const nunito = Nunito({
+  subsets: ['latin'],
+  weight: ['700', '900'],
+  variable: '--font-nunito',
+})
 
 export const metadata: Metadata = {
   title: 'WealthPath’s Knowledge Tester',
@@ -14,20 +27,19 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Nunito:wght@700;900&display=swap" rel="stylesheet" />
-      </head>
-      <body className="font-body antialiased flex flex-col min-h-screen">
+      <body className={cn(
+        "font-body antialiased flex flex-col min-h-screen",
+        inter.variable,
+        nunito.variable
+      )}>
         <main className="flex-grow">
           {children}
         </main>
         <Toaster />
-        <footer className="w-full bg-background border-t border-border mt-auto py-8">
+        <footer className="w-full bg-transparent mt-auto py-8">
           <div className="max-w-4xl mx-auto px-4 text-center text-muted-foreground">
             <p className="font-bold text-lg text-foreground">WealthPath</p>
-            <p className="italic mb-4">“A Journey Uniquely Yours”</p>
+            <p className="italic mb-4 text-sm">“A Journey Uniquely Yours”</p>
             <p className="text-sm">
               Contact Us: <a href="mailto:Raequancol12@gmail.com" className="text-primary hover:underline">Raequancol12@gmail.com</a>
             </p>

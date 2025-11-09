@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useMemo, useEffect } from 'react';
@@ -102,9 +101,9 @@ export function Quiz() {
   if (isFinished) {
     const isGoodScore = scorePercentage >= 80;
     return (
-      <Card className="w-full max-w-4xl border-primary/20 shadow-2xl [box-shadow:0_0_2rem_hsl(var(--primary)/0.2)]">
-        <CardHeader className="text-center p-6">
-          <CardTitle className="text-3xl font-black">Quiz Complete!</CardTitle>
+      <Card className="w-full max-w-4xl shadow-2xl">
+        <CardHeader className="text-center p-8">
+          <CardTitle className="text-3xl font-bold">Quiz Complete!</CardTitle>
           <CardDescription className="text-lg">You scored {score} out of {quizData.length}</CardDescription>
           <div className="relative pt-4">
             <Progress value={scorePercentage} className="h-4" />
@@ -114,12 +113,12 @@ export function Quiz() {
         <CardContent className="p-6">
           <div className="my-6">
             {isGoodScore ? (
-              <Alert className="border-accent/50 bg-green-500/10 text-green-500">
-                <Trophy className="h-5 w-5 text-green-400" />
-                <AlertTitle className="font-bold text-lg text-green-400">
+              <Alert className="border-accent bg-accent/30 text-accent-foreground">
+                <Trophy className="h-5 w-5 text-primary" />
+                <AlertTitle className="font-bold text-lg">
                   Excellent work!
                 </AlertTitle>
-                <AlertDescription className="text-green-200/80">
+                <AlertDescription>
                   You have a strong understanding of these financial concepts. Now it's time to go apply your knowledge and build your wealth!
                 </AlertDescription>
               </Alert>
@@ -138,27 +137,27 @@ export function Quiz() {
           <h3 className="text-xl font-semibold mb-4 text-center">Review Your Answers</h3>
           <Accordion type="multiple" className="w-full">
             {sectionNames.map(sectionName => (
-              <AccordionItem value={sectionName} key={sectionName}>
-                <AccordionTrigger className="text-lg font-semibold hover:no-underline">
+              <AccordionItem value={sectionName} key={sectionName} className="bg-muted/50 rounded-lg mb-2">
+                <AccordionTrigger className="text-lg font-semibold hover:no-underline px-4">
                   {sectionName}
                 </AccordionTrigger>
-                <AccordionContent>
+                <AccordionContent className="p-2">
                   <Accordion type="single" collapsible className="w-full">
                     {sections[sectionName].map((question) => {
                       const userAnswer = selectedAnswers[quizData.indexOf(question)];
                       const isCorrect = userAnswer === question.correctAnswer;
                       return (
-                        <AccordionItem value={`item-${question.id}`} key={question.id}>
-                          <AccordionTrigger className="text-left hover:no-underline">
+                        <AccordionItem value={`item-${question.id}`} key={question.id} className="border-b-0">
+                          <AccordionTrigger className="text-left hover:no-underline text-base">
                             <div className="flex items-center gap-4 w-full">
                               {isCorrect ? <CheckCircle2 className="text-green-500 h-5 w-5 flex-shrink-0" /> : <XCircle className="text-red-500 h-5 w-5 flex-shrink-0" />}
                               <span className="flex-1">{question.question}</span>
                             </div>
                           </AccordionTrigger>
                           <AccordionContent className="space-y-4">
-                            <p className={cn("p-2 rounded-md", isCorrect ? "bg-green-500/20" : "bg-red-500/20")}>Your answer: {userAnswer}</p>
-                            {!isCorrect && <p className="p-2 rounded-md bg-green-500/20">Correct answer: {question.correctAnswer}</p>}
-                            <div className="flex items-start gap-2 p-3 bg-muted/50 rounded-md">
+                            <p className={cn("p-3 rounded-md", isCorrect ? "bg-green-500/20" : "bg-red-500/20")}>Your answer: {userAnswer}</p>
+                            {!isCorrect && <p className="p-3 rounded-md bg-green-500/20">Correct answer: {question.correctAnswer}</p>}
+                            <div className="flex items-start gap-3 p-3 bg-card rounded-md">
                               <Lightbulb className="h-5 w-5 text-primary flex-shrink-0 mt-1" />
                               <p className="text-muted-foreground">{question.explanation}</p>
                             </div>
@@ -182,43 +181,39 @@ export function Quiz() {
   }
 
   return (
-    <Card className="w-full max-w-2xl shadow-2xl relative overflow-hidden border-primary/20 [box-shadow:0_0_2rem_hsl(var(--primary)/0.2)]">
+    <Card className="w-full max-w-2xl shadow-2xl relative overflow-hidden">
       {isCurrentAnswerCorrect && <Celebration />}
-      <div className="p-6">
+      <CardHeader className="p-6">
         <Progress value={quizProgress} className="mb-4 h-2"/>
         <CardDescription className="font-semibold text-primary">
           {currentQuestion.section}
         </CardDescription>
-         <CardTitle className="text-2xl mt-1">{currentQuestion.question}</CardTitle>
-      </div>
+         <CardTitle className="text-2xl mt-1 leading-tight">{currentQuestion.question}</CardTitle>
+      </CardHeader>
      
       <CardContent className="pt-0">
         <RadioGroup
           value={selectedAnswer}
           onValueChange={handleAnswerSelect}
-          className="space-y-4"
+          className="space-y-3"
           disabled={showFeedback}
         >
           {currentQuestion.options.map((option, index) => {
             const isSelected = selectedAnswer === option;
             const isCorrect = currentQuestion.correctAnswer === option;
             return (
-              <div key={index} className="flex items-center">
+              <div key={index}>
                 <RadioGroupItem
                   value={option}
                   id={`q${currentQuestion.id}-opt${index}`}
-                  className={cn(
-                    "peer h-6 w-6 border-2",
-                    showFeedback && isSelected && !isCorrect && "bg-red-500 border-red-500 text-destructive-foreground",
-                    showFeedback && isCorrect && "bg-green-500 border-green-500 text-white",
-                  )}
+                  className="sr-only peer"
                 />
                 <Label
                   htmlFor={`q${currentQuestion.id}-opt${index}`}
                   className={cn(
-                    "flex-1 ml-4 p-4 rounded-lg border-2 transition-all cursor-pointer peer-data-[state=checked]:border-primary bg-muted/30 hover:bg-muted/70",
-                    showFeedback && isSelected && !isCorrect && "bg-red-500/20 border-red-500/50 text-foreground",
-                    showFeedback && isCorrect && "bg-green-500/20 border-green-500/50 text-foreground",
+                    "flex-1 p-4 rounded-lg border-2 transition-all cursor-pointer bg-muted/30 hover:bg-muted/70 peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10",
+                    showFeedback && isSelected && !isCorrect && "bg-red-500/20 border-red-500/50 text-foreground animate-in shake",
+                    showFeedback && isCorrect && "bg-green-500/20 border-green-500/50 text-foreground animate-in pulse",
                   )}
                 >
                   {option}
