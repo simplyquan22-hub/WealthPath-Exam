@@ -100,12 +100,19 @@ export function Quiz() {
       const savedIndex = getInitialState('quizCurrentQuestionIndex', 0);
       const savedAnswers = getInitialState('quizSelectedAnswers', {});
       const savedFinished = getInitialState('quizIsFinished', false);
-      const savedScore = getInitialState('quizScore', 0);
-
+      
       setCurrentQuestionIndex(savedIndex);
       setSelectedAnswers(savedAnswers);
       setIsFinished(savedFinished);
-      setScore(savedScore);
+
+      // Recalculate score based on saved answers
+      const newScore = quizData.reduce((acc, question, index) => {
+        if (savedAnswers[index] === question.correctAnswer) {
+          return acc + 1;
+        }
+        return acc;
+      }, 0);
+      setScore(newScore);
     }
   }, [isHydrated]);
 
@@ -115,19 +122,17 @@ export function Quiz() {
       window.localStorage.setItem('quizCurrentQuestionIndex', JSON.stringify(currentQuestionIndex));
       window.localStorage.setItem('quizSelectedAnswers', JSON.stringify(selectedAnswers));
       window.localStorage.setItem('quizIsFinished', JSON.stringify(isFinished));
-      window.localStorage.setItem('quizScore', JSON.stringify(score));
     } catch (error) {
       console.warn('Could not save quiz state to localStorage:', error);
     }
-  }, [currentQuestionIndex, selectedAnswers, isFinished, score, isHydrated]);
+  }, [currentQuestionIndex, selectedAnswers, isFinished, isHydrated]);
   
   const currentQuestion = useMemo(() => quizData[currentQuestionIndex], [currentQuestionIndex]);
   const selectedAnswer = selectedAnswers[currentQuestionIndex];
 
   const handleAnswerSelect = (answer: string) => {
     if (showFeedback) return;
-    const newAnswers = { ...selectedAnswers, [currentQuestionIndex]: answer };
-    setSelectedAnswers(newAnswers);
+    setSelectedAnswers({ ...selectedAnswers, [currentQuestionIndex]: answer });
   };
   
   const handleSubmit = () => {
@@ -137,18 +142,7 @@ export function Quiz() {
 
     const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
     if (isCorrect) {
-      // Check if it's a new correct answer
-      const previouslySelected = selectedAnswers[currentQuestionIndex];
-      const previousStateWasIncorrect = previouslySelected && previouslySelected !== currentQuestion.correctAnswer;
-      if(!previouslySelected || previousStateWasIncorrect){
-         setScore(prev => prev + 1);
-      }
-    } else {
-       // If user had previously selected the correct answer and changed to incorrect
-       const previouslySelected = selectedAnswers[currentQuestionIndex];
-       if (previouslySelected === currentQuestion.correctAnswer) {
-          setScore(prev => Math.max(0, prev - 1));
-       }
+      setScore(prev => prev + 1);
     }
 
     setTimeout(() => {
@@ -172,7 +166,6 @@ export function Quiz() {
         window.localStorage.removeItem('quizCurrentQuestionIndex');
         window.localStorage.removeItem('quizSelectedAnswers');
         window.localStorage.removeItem('quizIsFinished');
-        window.localStorage.removeItem('quizScore');
       } catch (error) {
         console.warn('Could not remove quiz state from localStorage:', error);
       }
