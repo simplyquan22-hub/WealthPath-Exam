@@ -1,4 +1,8 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Quiz } from "@/components/quiz";
+import { BookOpen } from "lucide-react";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -14,6 +18,20 @@ export default function Home() {
         </p>
       </div>
       <Quiz />
+      <Card className="w-full max-w-2xl mt-8 shadow-lg">
+        <CardContent className="p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <h3 className="text-xl font-semibold">Need to Review?</h3>
+            <p className="text-muted-foreground">Head back to our course PDF to sharpen your knowledge.</p>
+          </div>
+          <Button asChild size="lg">
+            <Link href="https://docs.google.com/document/d/1-xCGlcx5ap2YinQ21jWvljQ8uWdof6NqCzATqJzfcJ4/edit?usp=drivesdk" target="_blank">
+              <BookOpen className="mr-2 h-5 w-5" />
+              Open Course PDF
+            </Link>
+          </Button>
+        </CardContent>
+      </Card>
     </div>
   );
 }
