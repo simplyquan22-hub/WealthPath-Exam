@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useMemoFirebase } from 'react';
 import { quizData, type Question } from '@/lib/quiz-data';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,9 +12,6 @@ import { CheckCircle2, XCircle, Lightbulb, RotateCw, Trophy, AlertTriangle } fro
 import { cn } from '@/lib/utils';
 import Celebration from './celebration';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { useFirebase } from '@/firebase';
-import { collection, addDoc } from 'firebase/firestore';
-import { useRouter } from 'next/navigation';
 
 // Group questions by section
 const sections = quizData.reduce((acc, question) => {
@@ -34,9 +31,7 @@ export function Quiz() {
   const [isFinished, setIsFinished] = useState<boolean>(false);
   const [score, setScore] = useState<number>(0);
   const [showFeedback, setShowFeedback] = useState(false);
-  const { user, firestore, isUserLoading } = useFirebase();
-  const router = useRouter();
-
+  
   const currentQuestion = useMemo(() => quizData[currentQuestionIndex], [currentQuestionIndex]);
   const selectedAnswer = selectedAnswers[currentQuestionIndex];
 
@@ -45,13 +40,13 @@ export function Quiz() {
     setSelectedAnswers({ ...selectedAnswers, [currentQuestionIndex]: answer });
   };
   
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!selectedAnswer) return;
     setShowFeedback(true);
   
     const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
   
-    setTimeout(async () => {
+    setTimeout(() => {
       if (isCorrect) {
         setScore(prev => prev + 1);
       }
@@ -61,7 +56,9 @@ export function Quiz() {
       if (currentQuestionIndex < quizData.length - 1) {
         setCurrentQuestionIndex(prev => prev + 1);
       } else {
+        // This is the last question, tally the final score
         const finalScore = quizData.reduce((acc, question, index) => {
+          // Use the just-submitted answer for the current (last) question
           const finalAnswer = index === currentQuestionIndex ? selectedAnswer : selectedAnswers[index];
           if (finalAnswer === question.correctAnswer) {
             return acc + 1;
@@ -70,20 +67,6 @@ export function Quiz() {
         }, 0);
         setScore(finalScore);
         setIsFinished(true);
-
-        if (user && firestore) {
-          try {
-            await addDoc(collection(firestore, `users/${user.uid}/quizHistory`), {
-              quizId: 'financial_literacy_v1',
-              score: finalScore,
-              totalQuestions: quizData.length,
-              dateTaken: new Date().toISOString(),
-              answers: selectedAnswers
-            });
-          } catch (error) {
-            console.error("Error saving quiz history: ", error);
-          }
-        }
       }
     }, 1200); // Wait for feedback animation
   };
@@ -96,10 +79,6 @@ export function Quiz() {
     setShowFeedback(false);
   };
   
-  const handleReview = () => {
-    router.push('/dashboard');
-  };
-
   const scorePercentage = (score / quizData.length) * 100;
   const quizProgress = ((isFinished ? quizData.length : currentQuestionIndex) / quizData.length) * 100;
   const isCurrentAnswerCorrect = showFeedback && selectedAnswer === currentQuestion.correctAnswer;
@@ -204,11 +183,6 @@ export function Quiz() {
             <Button onClick={handleReset} size="lg" variant="outline">
               <RotateCw className="mr-2 h-4 w-4" /> Try Again
             </Button>
-            {user && (
-              <Button onClick={handleReview} size="lg">
-                View My Progress
-              </Button>
-            )}
           </CardFooter>
         </Card>
     );
