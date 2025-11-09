@@ -201,22 +201,24 @@ export function Quiz() {
           {currentQuestion.options.map((option, index) => {
             const isSelected = selectedAnswer === option;
             const isCorrect = currentQuestion.correctAnswer === option;
+            const id = `q${currentQuestion.id}-opt${index}`;
             return (
               <div key={index}>
-                <RadioGroupItem
-                  value={option}
-                  id={`q${currentQuestion.id}-opt${index}`}
-                  className="sr-only peer"
-                />
                 <Label
-                  htmlFor={`q${currentQuestion.id}-opt${index}`}
+                  htmlFor={id}
                   className={cn(
-                    "flex items-center p-4 rounded-lg border-2 transition-all cursor-pointer bg-muted/30 hover:bg-muted/70 peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/10",
+                    "flex items-center p-4 rounded-lg border-2 transition-all cursor-pointer bg-muted/30 hover:bg-muted/70",
+                    isSelected && "border-primary bg-primary/10",
                     showFeedback && isSelected && !isCorrect && "bg-red-500/20 border-red-500/50 text-foreground animate-in shake",
                     showFeedback && isCorrect && "bg-green-500/20 border-green-500/50 text-foreground animate-in pulse",
                   )}
                 >
-                  {option}
+                  <RadioGroupItem
+                    value={option}
+                    id={id}
+                    className="mr-4"
+                  />
+                  <span className="flex-1">{option}</span>
                 </Label>
               </div>
             );
