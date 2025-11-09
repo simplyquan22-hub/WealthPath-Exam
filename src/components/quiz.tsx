@@ -8,7 +8,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { CheckCircle2, XCircle, Lightbulb, RotateCw, Trophy } from 'lucide-react';
+import { CheckCircle2, XCircle, Lightbulb, RotateCw, Trophy, AlertTriangle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Celebration from './celebration';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -60,14 +60,16 @@ export function Quiz() {
       setSelectedAnswers(savedAnswers);
       setIsFinished(savedFinished);
 
-      // Recalculate score based on saved answers
-      const newScore = quizData.reduce((acc, question, index) => {
-        if (savedAnswers[index] === question.correctAnswer) {
-          return acc + 1;
-        }
-        return acc;
-      }, 0);
-      setScore(newScore);
+      if (savedFinished) {
+        // Recalculate score based on saved answers if quiz was finished
+        const newScore = quizData.reduce((acc, question, index) => {
+          if (savedAnswers[index] === question.correctAnswer) {
+            return acc + 1;
+          }
+          return acc;
+        }, 0);
+        setScore(newScore);
+      }
     }
   }, [isHydrated]);
 
@@ -92,22 +94,32 @@ export function Quiz() {
   
   const handleSubmit = () => {
     if (!selectedAnswer) return;
-
-    const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
-    if (isCorrect) {
-      setScore(prev => prev + 1);
-    }
     setShowFeedback(true);
-
+  
     setTimeout(() => {
+      const isCorrect = selectedAnswer === currentQuestion.correctAnswer;
+      if (isCorrect) {
+        setScore(prev => prev + 1);
+      }
+  
       setShowFeedback(false);
+  
       if (currentQuestionIndex < quizData.length - 1) {
         setCurrentQuestionIndex(prev => prev + 1);
       } else {
         setIsFinished(true);
+        // Final score calculation happens here to ensure it's accurate
+        const finalScore = quizData.reduce((acc, question, index) => {
+          const finalAnswer = index === currentQuestionIndex ? selectedAnswer : selectedAnswers[index];
+          if (finalAnswer === question.correctAnswer) {
+            return acc + 1;
+          }
+          return acc;
+        }, 0);
+        setScore(finalScore);
       }
-    }, 2000);
-  }
+    }, 2000); // Wait for feedback animation
+  };
 
   const handleReset = () => {
     setCurrentQuestionIndex(0);
@@ -157,6 +169,31 @@ export function Quiz() {
 
   if (isFinished) {
     const isGoodScore = scorePercentage >= 80;
+
+    const weakestSection = useMemo(() => {
+      const incorrectAnswersBySection: Record<string, number> = {};
+
+      quizData.forEach((question, index) => {
+        if (selectedAnswers[index] !== question.correctAnswer) {
+          const section = question.section || 'General';
+          incorrectAnswersBySection[section] = (incorrectAnswersBySection[section] || 0) + 1;
+        }
+      });
+
+      let maxIncorrect = 0;
+      let worstSection = '';
+
+      for (const section in incorrectAnswersBySection) {
+        if (incorrectAnswersBySection[section] > maxIncorrect) {
+          maxIncorrect = incorrectAnswersBySection[section];
+          worstSection = section;
+        }
+      }
+      
+      // Only show a weakest section if the user got at least 2 questions wrong in it
+      return maxIncorrect >= 2 ? worstSection : null;
+    }, [selectedAnswers]);
+
     return (
         <Card className="relative w-full max-w-4xl shadow-2xl overflow-hidden">
           {isGoodScore && <Celebration />}
@@ -180,6 +217,15 @@ export function Quiz() {
             </p>
           </CardHeader>
           <CardContent className="p-6">
+            {weakestSection && (
+              <Alert variant="destructive" className="mb-6 bg-yellow-500/10 border-yellow-500/50 text-yellow-200">
+                <AlertTriangle className="h-4 w-4 !text-yellow-500" />
+                <AlertTitle className="font-semibold !text-yellow-400">Focus Area</AlertTitle>
+                <AlertDescription>
+                  You seem to be struggling with **{weakestSection}**. We recommend reviewing this topic in the course PDF to strengthen your understanding.
+                </AlertDescription>
+              </Alert>
+            )}
             <h3 className="text-xl font-semibold mb-4 text-center">Review Your Answers</h3>
             <Accordion type="multiple" className="w-full">
               {sectionNames.map(sectionName => (
