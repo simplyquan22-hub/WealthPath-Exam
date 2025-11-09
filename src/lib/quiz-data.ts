@@ -11,652 +11,652 @@ export type Question = {
 export const quizData: Question[] = [
   {
     id: 1,
-    question: "Which is the best definition of “wealth”?",
+    question: "An investor who only seeks out information that confirms their existing beliefs about a 'hot' stock is exhibiting which bias?",
     options: [
-      "Cash sitting in a bank account",
-      "Total assets you own that generate value",
-      "Your annual salary",
-      "Total amount you spend each year"
+      "Loss Aversion",
+      "Confirmation Bias",
+      "Recency Bias",
+      "Anchoring"
     ],
-    correctAnswer: "Total assets you own that generate value",
-    explanation: "Wealth is the total value of assets you own that can generate more value or be converted to cash, not just the money you earn or have in a bank.",
+    correctAnswer: "Confirmation Bias",
+    explanation: "Confirmation bias is the tendency to search for, interpret, favor, and recall information that confirms or supports one's preexisting beliefs. This often leads to ignoring red flags in an investment.",
     section: "Psychology & Money Management"
   },
   {
     id: 2,
-    question: "Selling investments too early because you’re scared is an example of which bias?",
+    question: "What is the primary difference between 'Systematic Risk' and 'Unsystematic Risk'?",
     options: [
-      "Herd mentality",
-      "Loss aversion",
-      "Overconfidence",
-      "Anchoring"
+      "Systematic risk can be diversified away, while unsystematic risk cannot.",
+      "Unsystematic risk affects all companies, while systematic risk is company-specific.",
+      "Systematic risk (market risk) is undiversifiable, while unsystematic (specific) risk can be reduced through diversification.",
+      "Both are the same, but apply to different asset classes."
     ],
-    correctAnswer: "Loss aversion",
-    explanation: "Loss aversion describes the tendency to prefer avoiding losses over acquiring equivalent gains. It can lead to irrational decisions like selling winning investments prematurely.",
+    correctAnswer: "Systematic risk (market risk) is undiversifiable, while unsystematic (specific) risk can be reduced through diversification.",
+    explanation: "Systematic risk, or market risk, affects the entire market (e.g., interest rate changes, recessions). Unsystematic risk is specific to a company or industry and can be mitigated by owning a variety of assets.",
     section: "Psychology & Money Management"
   },
   {
     id: 3,
-    question: "Which behavior causes financial stagnation even as income grows?",
+    question: "When your income increases by 20%, you increase your spending by 20%. This phenomenon is known as:",
     options: [
-      "Dollar-cost averaging",
-      "Diversification",
-      "Lifestyle inflation",
-      "Long-term compounding"
+      "The Wealth Effect",
+      "Lifestyle Creep",
+      "The Law of Diminishing Returns",
+      "Income Elasticity"
     ],
-    correctAnswer: "Lifestyle inflation",
-    explanation: "Lifestyle inflation occurs when your spending increases as your income grows, preventing you from building wealth because you're spending the extra money instead of saving or investing it.",
+    correctAnswer: "Lifestyle Creep",
+    explanation: "Lifestyle creep, or lifestyle inflation, is when spending increases as income grows. While seeming natural, it can severely limit one's ability to build wealth over the long term.",
     section: "Psychology & Money Management"
   },
   {
     id: 4,
-    question: "“Control money or it controls you” relates MOST to:",
+    question: "What is 'Human Capital' in the context of personal finance?",
     options: [
-      "luck",
-      "budgeting apps",
-      "intentional money flow",
-      "credit card rewards"
+      "The money you inherited from your family.",
+      "The total value of your investment portfolio.",
+      "Your future earning potential based on your skills, knowledge, and experience.",
+      "A type of high-yield corporate bond."
     ],
-    correctAnswer: "intentional money flow",
-    explanation: "This phrase emphasizes the importance of being proactive and intentional with your financial decisions (your money flow) to achieve your goals, rather than letting your finances dictate your life.",
+    correctAnswer: "Your future earning potential based on your skills, knowledge, and experience.",
+    explanation: "Human capital is your most valuable asset when you're young. It represents your ability to earn money throughout your career. Investing in skills and education directly increases it.",
     section: "Psychology & Money Management"
   },
   {
     id: 5,
-    question: "The foundation of changing financial outcomes starts primarily with:",
+    question: "The concept of 'Time in the market, not timing the market' is a direct counter-argument to which investor behavior?",
     options: [
-      "advanced stock picking",
-      "mindset and beliefs",
-      "perfect timing",
-      "high salary"
+      "Dollar-cost averaging",
+      "Buy and hold investing",
+      "Frequent trading based on market predictions",
+      "Portfolio rebalancing"
     ],
-    correctAnswer: "mindset and beliefs",
-    explanation: "Your financial success is deeply rooted in your mindset. Your beliefs about money shape your habits and decisions, forming the true foundation for change.",
+    correctAnswer: "Frequent trading based on market predictions",
+    explanation: "This phrase highlights that trying to predict market tops and bottoms is often a losing game. Consistent, long-term investment (time in the market) has historically been more successful.",
     section: "Psychology & Money Management"
   },
   {
     id: 6,
-    question: "The #1 reason saving alone is not enough:",
+    question: "What is the 'real rate of return' on an investment?",
     options: [
-      "banks charge fees",
-      "inflation erodes purchasing power",
-      "savings accounts can crash",
-      "savings accounts charge taxes on growth"
+      "The return before taxes are paid.",
+      "The return after adjusting for inflation.",
+      "The total dividend yield.",
+      "The guaranteed interest rate from a bank."
     ],
-    correctAnswer: "inflation erodes purchasing power",
-    explanation: "Inflation causes the value of money to decrease over time. If your savings don't grow at a rate higher than inflation, your purchasing power diminishes.",
+    correctAnswer: "The return after adjusting for inflation.",
+    explanation: "The real rate of return shows the true increase in your purchasing power. It is calculated by subtracting the inflation rate from your investment's nominal return.",
     section: "Why Investing Beats Saving"
   },
   {
     id: 7,
-    question: "Compound growth is best described as:",
+    question: "The 'Rule of 72' is a quick mental shortcut used to estimate what?",
     options: [
-      "interest you earn only on new deposits",
-      "dividends that never increase",
-      "interest on interest",
-      "interest only at year end"
+      "The future value of a single investment.",
+      "The number of years it will take for an investment to double in value.",
+      "The ideal expense ratio for an ETF.",
+      "The correct asset allocation for your age."
     ],
-    correctAnswer: "interest on interest",
-    explanation: "Compounding is the process where your investment returns start to earn their own returns. It's the concept of earning 'interest on your interest,' which accelerates wealth growth.",
+    correctAnswer: "The number of years it will take for an investment to double in value.",
+    explanation: "By dividing 72 by the annual rate of return, you can get a rough estimate of how many years it will take for your investment to double. For example, at an 8% return, it takes about 9 years (72/8).",
     section: "Why Investing Beats Saving"
   },
   {
     id: 8,
-    question: "Historically, stock markets average around ___ per year long-term.",
+    question: "Which of these is NOT a primary reason investing is considered superior to saving for long-term goals?",
     options: [
-      "2%–3%",
-      "7%–10%",
-      "12%–18%",
-      "20%+ always"
+      "Potential to outpace inflation.",
+      "Benefit of compound growth.",
+      "Capital is 100% safe and government-insured at all levels.",
+      "Ability to generate passive income through dividends or interest."
     ],
-    correctAnswer: "7%–10%",
-    explanation: "While past performance is no guarantee of future results, historically, major stock market indexes like the S&P 500 have averaged returns in the 7-10% range over long periods.",
+    correctAnswer: "Capital is 100% safe and government-insured at all levels.",
+    explanation: "While bank savings are often insured (like by the FDIC), invested capital is subject to market risk and is not insured against loss in value.",
     section: "Why Investing Beats Saving"
   },
   {
     id: 9,
-    question: "Investing is about:",
+    question: "An opportunity cost of keeping too much cash in a savings account during a bull market is...",
     options: [
-      "rapidly flipping stocks",
-      "timing highs and lows",
-      "putting your money to work to create growth",
-      "never taking risk"
+      "The risk of the bank failing.",
+      "The monthly fees charged by the bank.",
+      "Forgoing higher potential returns from the stock market.",
+      "The cash is not liquid enough to be accessed."
     ],
-    correctAnswer: "putting your money to work to create growth",
-    explanation: "The core purpose of investing is to deploy your capital into assets that have the potential to grow in value over time, creating more wealth.",
+    correctAnswer: "Forgoing higher potential returns from the stock market.",
+    explanation: "Opportunity cost is the potential benefit you miss out on when choosing one alternative over another. Keeping cash in savings means missing out on the growth it could have experienced if invested.",
     section: "Why Investing Beats Saving"
   },
   {
     id: 10,
-    question: "Before investing you should:",
+    question: "What is the primary purpose of a 3-6 month emergency fund?",
     options: [
-      "put everything into stocks immediately",
-      "eliminate all low-interest debt",
-      "have an emergency fund 3–6 months",
-      "buy individual tech stocks first"
+      "To have 'dry powder' to invest when the market dips.",
+      "To prevent the forced sale of long-term investments to cover unexpected expenses.",
+      "To earn a high rate of return in a liquid account.",
+      "To meet the minimum requirements for opening a brokerage account."
     ],
-    correctAnswer: "have an emergency fund 3–6 months",
-    explanation: "An emergency fund of 3-6 months' worth of living expenses provides a safety net, so you won't be forced to sell your investments at a bad time if an unexpected event occurs.",
+    correctAnswer: "To prevent the forced sale of long-term investments to cover unexpected expenses.",
+    explanation: "The emergency fund acts as a crucial buffer. It provides liquidity for emergencies (job loss, medical bills) so you don't have to disrupt your investment strategy and sell assets at a potentially bad time.",
     section: "Getting Ready Before Investing"
   },
   {
     id: 11,
-    question: "High interest debt (e.g. 20% cards) should:",
+    question: "Paying off a credit card with a 22% APR is financially equivalent to what?",
     options: [
-      "be ignored if you are young",
-      "be paid down before aggressive investing",
-      "be transferred to crypto",
-      "be refinanced to mortgages"
+      "Earning a 22% tax-free return on an investment.",
+      "Losing 22% in the stock market.",
+      "Getting a 22% raise at your job.",
+      "A risk-free, guaranteed return of 22% on your money."
     ],
-    correctAnswer: "be paid down before aggressive investing",
-    explanation: "The guaranteed 'return' you get from paying off high-interest debt (like a 20% credit card) is almost impossible to beat consistently through investing. It's a risk-free way to improve your finances.",
+    correctAnswer: "A risk-free, guaranteed return of 22% on your money.",
+    explanation: "Paying off high-interest debt provides a guaranteed 'return' equal to the interest rate. It's a powerful, risk-free financial move that's very difficult to beat with market investments.",
     section: "Getting Ready Before Investing"
   },
   {
     id: 12,
-    question: "Even $50–$100 a month investing is powerful because:",
+    question: "What does an investor's 'time horizon' refer to?",
     options: [
-      "low fees",
-      "compounding",
-      "it’s easy to cancel if needed",
-      "brokers require it"
+      "The time of day they prefer to trade.",
+      "How long they are willing to wait for a stock to become profitable.",
+      "The length of time they expect to hold an investment before needing the money.",
+      "The age at which they plan to retire."
     ],
-    correctAnswer: "compounding",
-    explanation: "Thanks to the power of compounding, even small, consistent investments can grow into significant sums over a long period. The key is starting early and staying consistent.",
+    correctAnswer: "The length of time they expect to hold an investment before needing the money.",
+    explanation: "Your time horizon is a critical factor in determining risk tolerance. A longer time horizon (e.g., for retirement in 30 years) allows you to take on more risk for higher potential returns.",
     section: "Getting Ready Before Investing"
   },
   {
     id: 13,
-    question: "Risk tolerance refers to:",
+    question: "What is the main difference between 'risk tolerance' and 'risk capacity'?",
     options: [
-      "how much risk your friend takes",
-      "how much volatility you are emotionally comfortable with",
-      "the level of your income",
-      "how many accounts you have"
+      "They are the same thing.",
+      "Tolerance is your emotional comfort with risk; capacity is your financial ability to withstand losses.",
+      "Capacity is your emotional comfort with risk; tolerance is your financial ability to withstand losses.",
+      "Tolerance is for stocks; capacity is for bonds."
     ],
-    correctAnswer: "how much volatility you are emotionally comfortable with",
-    explanation: "Risk tolerance is a personal, emotional measure of how much your portfolio can fluctuate in value before you feel panicked or stressed. It's crucial for building a sustainable investment strategy.",
+    correctAnswer: "Tolerance is your emotional comfort with risk; capacity is your financial ability to withstand losses.",
+    explanation: "You might feel comfortable with risk (high tolerance), but if you have a low income and high debt, you may not be able to afford a large loss (low capacity). Both are key to designing a portfolio.",
     section: "Getting Ready Before Investing"
   },
   {
     id: 14,
-    question: "Large-cap stocks are typically:",
+    question: "A company that reinvests most of its profits back into the business for expansion rather than paying dividends is typically classified as a:",
     options: [
-      "new risky startups",
-      "large established companies",
-      "penny stocks",
-      "crypto-based firms"
+      "Value Stock",
+      "Blue-Chip Stock",
+      "Growth Stock",
+      "Defensive Stock"
     ],
-    correctAnswer: "large established companies",
-    explanation: "Large-cap stocks represent large, well-established companies with a history of stable growth and significant market share, like Apple or Microsoft.",
+    correctAnswer: "Growth Stock",
+    explanation: "Growth companies are focused on scaling their operations, and they use their earnings to fund R&D, acquisitions, and other expansion efforts to increase their market share and future profits.",
     section: "Stocks: Size & Style"
   },
   {
     id: 15,
-    question: "Small cap stocks have:",
+    question: "Which of these 'market caps' typically has the highest potential for growth but also the highest volatility?",
     options: [
-      "lowest volatility",
-      "highest potential long-term returns",
-      "guaranteed dividends",
-      "only international companies"
+      "Large-cap",
+      "Mega-cap",
+      "Mid-cap",
+      "Small-cap"
     ],
-    correctAnswer: "highest potential long-term returns",
-    explanation: "While they come with higher risk and volatility, smaller companies have more room to grow, offering the potential for higher returns over the long term compared to large-cap stocks.",
+    correctAnswer: "Small-cap",
+    explanation: "Small-cap companies are younger and have more room to grow compared to their large-cap counterparts. This growth potential comes with higher risk and price volatility.",
     section: "Stocks: Size & Style"
   },
   {
     id: 16,
-    question: "Blue-chip stocks are known for:",
+    question: "Which term best describes stocks of companies in sectors like utilities and consumer staples that tend to perform consistently regardless of the economic cycle?",
     options: [
-      "unstable revenue",
-      "being young companies",
-      "quality + stability + often dividends",
-      "IPO phase growth"
+      "Cyclical Stocks",
+      "Speculative Stocks",
+      "Defensive Stocks",
+      "Momentum Stocks"
     ],
-    correctAnswer: "quality + stability + often dividends",
-    explanation: "Blue-chip stocks are high-quality, stable, and financially sound companies that are leaders in their industries. Many also have a long history of paying dividends to shareholders.",
+    correctAnswer: "Defensive Stocks",
+    explanation: "Defensive stocks provide goods and services that people need regardless of the economy's health (e.g., electricity, toothpaste). This makes them more stable during economic downturns.",
     section: "Stocks: Size & Style"
   },
   {
     id: 17,
-    question: "Growth stocks usually:",
+    question: "An investor seeking companies that may be undervalued by the market, trading for less than their intrinsic worth, is following which style?",
     options: [
-      "return profits to shareholders mostly as dividends",
-      "reinvest heavily into the business",
-      "never grow",
-      "only exist in healthcare"
+      "Growth Investing",
+      "Value Investing",
+      "Momentum Investing",
+      "Socially Responsible Investing"
     ],
-    correctAnswer: "reinvest heavily into the business",
-    explanation: "Growth stocks are associated with companies that are focused on expanding. They typically reinvest their earnings back into the business to fuel further growth, rather than paying them out as dividends.",
+    correctAnswer: "Value Investing",
+    explanation: "Value investors are like bargain hunters. They look for solid companies that are temporarily out of favor with the market, believing their true worth will eventually be recognized.",
     section: "Stocks: Size & Style"
   },
   {
     id: 18,
-    question: "ETFs trade like:",
+    question: "What is an ETF's 'expense ratio'?",
     options: [
-      "bonds only",
-      "real estate",
-      "individual stocks",
-      "certificates of deposit"
+      "The ratio of stocks to bonds inside the fund.",
+      "The annual fee charged by the fund, expressed as a percentage of your investment.",
+      "A measure of the fund's past performance.",
+      "The tax you pay when you sell the ETF."
     ],
-    correctAnswer: "individual stocks",
-    explanation: "Exchange-Traded Funds (ETFs) are bought and sold on stock exchanges throughout the trading day, just like individual stocks, offering high liquidity and price transparency.",
+    correctAnswer: "The annual fee charged by the fund, expressed as a percentage of your investment.",
+    explanation: "The expense ratio covers the fund's operating costs. A lower expense ratio means more of your money stays invested and working for you, which has a huge impact over the long term.",
     section: "ETFs / Index Funds / Mutual Funds"
   },
   {
     id: 19,
-    question: "Index funds attempt to:",
+    question: "What is 'tracking error' in the context of an index fund?",
     options: [
-      "beat the market through active trades",
-      "mimic a market index",
-      "guarantee performance",
-      "avoid diversification"
+      "A mistake in your brokerage account statement.",
+      "The difference between the fund's return and the return of the index it's supposed to mimic.",
+      "The tax consequence of frequent trading.",
+      "The delay in processing a mutual fund trade."
     ],
-    correctAnswer: "mimic a market index",
-    explanation: "An index fund is a type of mutual fund or ETF designed to track the performance of a specific market benchmark, like the S&P 500, providing broad market exposure.",
+    correctAnswer: "The difference between the fund's return and the return of the index it's supposed to mimic.",
+    explanation: "Ideally, an S&P 500 index fund's return should perfectly match the S&P 500's return. In reality, fees and transaction costs create a small difference, known as tracking error.",
     section: "ETFs / Index Funds / Mutual Funds"
   },
   {
     id: 20,
-    question: "S&P 500 index fund gives exposure to:",
+    question: "The key structural difference that often leads to ETFs being more tax-efficient than mutual funds is:",
     options: [
-      "500 largest U.S companies",
-      "500 global bonds",
-      "only tech stocks",
-      "only foreign markets"
+      "ETFs never pay dividends.",
+      "The 'in-kind' creation and redemption process for ETF shares.",
+      "ETFs are not regulated by the SEC.",
+      "Mutual funds are only for retirement accounts."
     ],
-    correctAnswer: "500 largest U.S companies",
-    explanation: "An S&P 500 index fund holds stocks in the 500 largest publicly traded companies in the United States, offering a diversified snapshot of the U.S. stock market.",
+    correctAnswer: "The 'in-kind' creation and redemption process for ETF shares.",
+    explanation: "This mechanism allows ETFs to avoid selling securities and realizing capital gains to meet investor redemptions, which is a common occurrence in mutual funds that can create a tax liability for all shareholders.",
     section: "ETFs / Index Funds / Mutual Funds"
   },
   {
     id: 21,
-    question: "Mutual funds settle trades:",
+    question: "A passively managed fund seeks to do what?",
     options: [
-      "anytime intraday",
-      "only at market close",
-      "only on weekends",
-      "only monthly"
+      "Use expert managers to pick stocks they believe will beat the market.",
+      "Generate the highest possible returns, regardless of risk.",
+      "Track the performance of a specific market index as closely as possible.",
+      "Invest only in government bonds."
     ],
-    correctAnswer: "only at market close",
-    explanation: "Unlike ETFs, mutual fund trades are executed only once per day at the net asset value (NAV) price, which is calculated after the market closes.",
+    correctAnswer: "Track the performance of a specific market index as closely as possible.",
+    explanation: "Passive management (like in an index fund) doesn't try to beat the market. It aims to replicate the market's performance by holding all (or a representative sample) of the securities in an index.",
     section: "ETFs / Index Funds / Mutual Funds"
   },
   {
     id: 22,
-    question: "ETFs and index funds are popular because they are:",
+    question: "If you buy an S&P 500 index fund, your investment is concentrated in which country's market?",
     options: [
-      "expensive",
-      "low-fee and diversified",
-      "illegal in IRAs",
-      "require 10k minimums"
+      "China",
+      "The United Kingdom",
+      "Japan",
+      "The United States"
     ],
-    correctAnswer: "low-fee and diversified",
-    explanation: "Their popularity stems from offering instant diversification across many securities at a very low cost (expense ratio), making them accessible and efficient for most investors.",
+    correctAnswer: "The United States",
+    explanation: "The S&P 500 is an index of the 500 largest publicly traded companies in the United States. To invest internationally, you would need to look for international or global index funds.",
     section: "ETFs / Index Funds / Mutual Funds"
   },
   {
     id: 23,
-    question: "A bond is essentially:",
+    question: "What is the typical relationship between prevailing interest rates and bond prices?",
     options: [
-      "partial ownership in a company",
-      "a loan to an issuer",
-      "a crypto token",
-      "a commodity contract"
+      "When interest rates rise, bond prices also rise.",
+      "When interest rates rise, bond prices fall.",
+      "Interest rates have no effect on bond prices.",
+      "When interest rates fall, bond prices also fall."
     ],
-    correctAnswer: "a loan to an issuer",
-    explanation: "When you buy a bond, you are lending money to an entity (a corporation or government), which promises to pay you back with interest over a set period.",
+    correctAnswer: "When interest rates rise, bond prices fall.",
+    explanation: "This is an inverse relationship. If new bonds are being issued with higher interest rates (yields), existing bonds with lower rates become less attractive, so their prices must fall to compete.",
     section: "Bonds"
   },
   {
     id: 24,
-    question: "Bonds help portfolios by:",
+    question: "A bond's 'duration' is a measure of its:",
     options: [
-      "maximizing short term return",
-      "adding extreme volatility",
-      "stabilizing during stock downturns",
-      "eliminating all risk"
+      "Time until maturity.",
+      "Sensitivity to changes in interest rates.",
+      "Credit quality rating.",
+      "Dividend yield."
     ],
-    correctAnswer: "stabilizing during stock downturns",
-    explanation: "Bonds typically have a low correlation with stocks, meaning they often move in the opposite direction. This provides a stabilizing effect on a portfolio during periods of stock market volatility.",
+    correctAnswer: "Sensitivity to changes in interest rates.",
+    explanation: "Duration, measured in years, tells you how much a bond's price is likely to change for every 1% change in interest rates. A longer duration means higher sensitivity (more risk).",
     section: "Bonds"
   },
   {
     id: 25,
-    question: "Government bonds are generally:",
+    question: "High-yield bonds, also known as 'junk bonds', have higher yields than government bonds because they have higher:",
     options: [
-      "lower risk",
-      "highest risk",
-      "not allowed",
-      "fake protection"
+      "Credit risk",
+      "Interest rate risk",
+      "Inflation risk",
+      "Liquidity risk"
     ],
-    correctAnswer: "lower risk",
-    explanation: "Bonds issued by stable governments (like U.S. Treasury bonds) are considered among the safest investments because they are backed by the full faith and credit of the government.",
+    correctAnswer: "Credit risk",
+    explanation: "High-yield bonds are issued by companies with a higher risk of not being able to pay back their debt (defaulting). Investors demand a higher yield to compensate for this extra credit risk.",
     section: "Bonds"
   },
   {
     id: 26,
-    question: "A dividend is:",
+    question: "What is a 'Qualified Dividend'?",
     options: [
-      "a fee you pay the broker",
-      "a bonus from the IRS",
-      "a portion of earnings paid to shareholders",
-      "a tax refund"
+      "Any dividend paid by a foreign company.",
+      "A dividend that is guaranteed not to decrease.",
+      "A dividend that meets certain IRS requirements to be taxed at lower capital gains rates.",
+      "A dividend that is automatically reinvested."
     ],
-    correctAnswer: "a portion of earnings paid to shareholders",
-    explanation: "A dividend is a distribution of a company's profits to its shareholders, serving as a reward for their investment.",
+    correctAnswer: "A dividend that meets certain IRS requirements to be taxed at lower capital gains rates.",
+    explanation: "Qualified dividends are taxed at the more favorable long-term capital gains tax rates, whereas ordinary (unqualified) dividends are taxed at your regular income tax rate.",
     section: "Dividends"
   },
   {
     id: 27,
-    question: "DRIP means:",
+    question: "What is a stock's 'Dividend Yield'?",
     options: [
-      "trading every day",
-      "auto reinvesting dividends",
-      "dividend only in December",
-      "crypto staking only"
+      "The total dollar amount of the dividend paid per share.",
+      "The annual dividend per share divided by the stock's current price.",
+      "The percentage increase in the dividend payment from the previous year.",
+      "A guarantee of future dividend payments."
     ],
-    correctAnswer: "auto reinvesting dividends",
-    explanation: "DRIP stands for Dividend Reinvestment Plan. It's an arrangement that allows shareholders to automatically use their cash dividends to purchase more shares of the stock.",
+    correctAnswer: "The annual dividend per share divided by the stock's current price.",
+    explanation: "Dividend yield is a percentage that shows how much a company pays in dividends each year relative to its stock price. It's a way to measure the return you get from dividends.",
     section: "Dividends"
   },
-  {
+{
     id: 28,
-    question: "Reinvesting dividends accelerates wealth by:",
+    question: "What is the primary benefit of a Dividend Reinvestment Plan (DRIP)?",
     options: [
-      "buying fewer shares",
-      "compounding",
-      "reducing ownership",
-      "adding management fees"
+      "It guarantees the company will always pay a dividend.",
+      "It allows you to buy more shares commission-free, leveraging the power of compounding.",
+      "It makes your dividends tax-free.",
+      "It automatically sells your shares when the dividend is cut."
     ],
-    correctAnswer: "compounding",
-    explanation: "By reinvesting dividends, you buy more shares, which in turn generate more dividends. This creates a powerful compounding effect that can significantly boost your total return over time.",
+    correctAnswer: "It allows you to buy more shares commission-free, leveraging the power of compounding.",
+    explanation: "DRIPs put your investment on autopilot. Your dividends are used to buy more shares (even fractional ones), which then earn their own dividends, creating a powerful snowball effect of wealth.",
     section: "Dividends"
   },
   {
     id: 29,
-    question: "Most portfolios are built from:",
+    question: "In a 'core-satellite' portfolio construction, what is the role of the 'core'?",
     options: [
-      "land & collectibles",
-      "stocks + bonds + alternatives",
-      "franchises only",
-      "credit cards"
+      "To hold speculative, high-risk assets.",
+      "To provide broad, diversified market exposure through low-cost index funds.",
+      "To invest only in individual 'meme' stocks.",
+      "To hold cash and gold exclusively."
     ],
-    correctAnswer: "stocks + bonds + alternatives",
-    explanation: "A diversified portfolio is typically constructed using a mix of asset classes, with stocks and bonds forming the core. Alternatives like real estate or commodities can be added for further diversification.",
+    correctAnswer: "To provide broad, diversified market exposure through low-cost index funds.",
+    explanation: "The 'core' is the foundation of the portfolio, usually comprising the largest portion (e.g., 70-80%) and made up of stable, diversified investments like total market index funds.",
     section: "Portfolio Foundation"
   },
   {
     id: 30,
-    question: "Stocks mainly provide:",
+    question: "What is the primary purpose of asset allocation?",
     options: [
-      "stability",
-      "guaranteed income",
-      "long-term growth",
-      "tax write-offs"
+      "To pick the single best-performing stock.",
+      "To eliminate all investment risk.",
+      "To maximize short-term gains.",
+      "To balance risk and reward by diversifying across different asset classes."
     ],
-    correctAnswer: "long-term growth",
-    explanation: "The primary role of stocks in a portfolio is to provide capital appreciation and long-term growth, as they represent ownership in a growing business.",
+    correctAnswer: "To balance risk and reward by diversifying across different asset classes.",
+    explanation: "Asset allocation is the strategic process of dividing your portfolio among major categories like stocks, bonds, and cash. It's considered the most important driver of your long-term returns and risk level.",
     section: "Portfolio Foundation"
   },
   {
     id: 31,
-    question: "Bonds mainly provide:",
+    question: "Historically, what has been the main role of bonds in a traditional 60/40 stock/bond portfolio?",
     options: [
-      "massive volatility",
-      "stability + income",
-      "rapid growth",
-      "growth only"
+      "To provide the highest possible long-term growth.",
+      "To act as a speculative bet on interest rates.",
+      "To provide stability and income, and to hedge against stock market volatility.",
+      "To invest in emerging technology companies."
     ],
-    correctAnswer: "stability + income",
-    explanation: "Bonds offer stability to a portfolio due to their low correlation with stocks and provide a predictable income stream through regular interest (coupon) payments.",
+    correctAnswer: "To provide stability and income, and to hedge against stock market volatility.",
+    explanation: "Bonds are typically less volatile than stocks and often move in the opposite direction during downturns. This provides a stabilizing 'cushion' for the overall portfolio.",
     section: "Portfolio Foundation"
   },
   {
     id: 32,
-    question: "Alternatives (like real estate) should usually be what % range?",
+    question: "Adding a small allocation to an asset class like 'Emerging Markets' would be an example of what?",
     options: [
-      "50%–60%",
-      "5%–15%",
-      "100%",
-      "0%"
+      "Building the 'core' of your portfolio.",
+      "A 'satellite' position used to enhance returns or diversification.",
+      "A strategy to eliminate all risk.",
+      "A typical strategy for a retiree seeking only income."
     ],
-    correctAnswer: "5%–15%",
-    explanation: "Alternatives are typically used as a smaller, satellite holding in a portfolio (often 5-15%) to add diversification beyond traditional stocks and bonds.",
+    correctAnswer: "A 'satellite' position used to enhance returns or diversification.",
+    explanation: "Satellite holdings are smaller, often riskier, positions that 'orbit' the core. They are used to target specific areas for potentially higher growth, like emerging market economies.",
     section: "Portfolio Foundation"
   },
   {
     id: 33,
-    question: "A ticker symbol is:",
+    question: "A 'market order' to buy a stock does what?",
     options: [
-      "slang for dividends",
-      "a shortcut code for a security",
-      "an internal broker password",
-      "an industry category"
+      "Executes the trade at a specific price you name, or not at all.",
+      "Executes the trade at the best available price at that moment, guaranteeing execution but not the price.",
+      "Executes the trade only at the end of the trading day.",
+      "Guarantees you will get the same price as the last trade."
     ],
-    correctAnswer: "a shortcut code for a security",
-    explanation: "A ticker symbol is a unique series of letters (e.g., AAPL for Apple) assigned to a security for trading purposes on a stock exchange.",
+    correctAnswer: "Executes the trade at the best available price at that moment, guaranteeing execution but not the price.",
+    explanation: "A market order prioritizes speed. It's an instruction to buy or sell immediately at the current market price. A 'limit order', by contrast, prioritizes price over speed.",
     section: "Tickers + Brokerage Accounts + IRA Basics"
   },
   {
     id: 34,
-    question: "A brokerage account allows you to:",
+    question: "What is a key tax advantage of a Traditional 401(k) or IRA?",
     options: [
-      "buy / sell investments",
-      "only save cash",
-      "only buy CDs",
-      "only buy lottery tickets"
+      "Contributions are made with after-tax dollars.",
+      "Withdrawals in retirement are always tax-free.",
+      "Contributions may be tax-deductible, reducing your current taxable income.",
+      "They are completely exempt from all taxes forever."
     ],
-    correctAnswer: "buy / sell investments",
-    explanation: "A brokerage account is a specialized financial account that you need to open to buy and sell investments like stocks, bonds, and ETFs.",
+    correctAnswer: "Contributions may be tax-deductible, reducing your current taxable income.",
+    explanation: "The primary benefit of a Traditional IRA/401(k) is the immediate tax break. You contribute pre-tax money, which lowers your income tax bill for the year. Taxes are paid on withdrawals in retirement.",
     section: "Tickers + Brokerage Accounts + IRA Basics"
   },
   {
     id: 35,
-    question: "Traditional IRA contributions:",
+    question: "At what age can you typically begin penalty-free withdrawals from a Traditional IRA or 401(k)?",
     options: [
-      "are always nondeductible",
-      "may be tax deductible depending on income",
-      "must be cash only",
-      "must be crypto only"
+      "55",
+      "59 ½",
+      "62",
+      "65"
     ],
-    correctAnswer: "may be tax deductible depending on income",
-    explanation: "Contributions to a Traditional IRA may be tax-deductible, which lowers your taxable income for the year. Deductibility depends on your income and whether you have a workplace retirement plan.",
+    correctAnswer: "59 ½",
+    explanation: "Withdrawing from these retirement accounts before age 59 ½ usually results in a 10% penalty on top of the ordinary income tax owed, though some exceptions apply.",
     section: "Tickers + Brokerage Accounts + IRA Basics"
   },
   {
     id: 36,
-    question: "Roth IRA contributions are:",
+    question: "What is a primary benefit of a Roth IRA?",
     options: [
-      "pre-tax",
-      "after-tax",
-      "untaxed forever",
-      "contribution free"
+      "It has a higher annual contribution limit than a 401(k).",
+      "All contributions are tax-deductible in the present.",
+      "Qualified withdrawals in retirement are 100% tax-free.",
+      "It has no income limits for contributions."
     ],
-    correctAnswer: "after-tax",
-    explanation: "You contribute to a Roth IRA with money you've already paid taxes on (after-tax). The major benefit is that your qualified withdrawals in retirement are completely tax-free.",
+    correctAnswer: "Qualified withdrawals in retirement are 100% tax-free.",
+    explanation: "With a Roth, you pay taxes on contributions today so that all your investment growth and withdrawals are completely free from taxes in retirement. This is a huge advantage, especially if you expect to be in a higher tax bracket later.",
     section: "Tickers + Brokerage Accounts + IRA Basics"
   },
   {
     id: 37,
-    question: "Roth IRA withdrawals in retirement are:",
+    question: "The 'Backdoor Roth IRA' is a strategy used by whom?",
     options: [
-      "tax-free",
-      "taxed like income",
-      "penalty only",
-      "illegal"
+      "Teenagers who want to start investing early.",
+      "Individuals whose income is too high to contribute to a Roth IRA directly.",
+      "Retirees who want to avoid required minimum distributions.",
+      "Anyone who wants to contribute more than the annual limit."
     ],
-    correctAnswer: "tax-free",
-    explanation: "Because you paid taxes on the money going in, all your investment growth and qualified withdrawals from a Roth IRA during retirement are 100% tax-free.",
+    correctAnswer: "Individuals whose income is too high to contribute to a Roth IRA directly.",
+    explanation: "This strategy involves making a non-deductible contribution to a Traditional IRA and then immediately converting it to a Roth IRA, bypassing the income limitations for direct Roth contributions.",
     section: "Tickers + Brokerage Accounts + IRA Basics"
   },
   {
     id: 38,
-    question: "IRA contribution limit (2025) under age 50 approx:",
+    question: "The catch-up contribution for IRAs applies to individuals who are:",
     options: [
-      "$3,000",
-      "$7,000",
-      "$14,000",
-      "$25,000"
+      "Under age 25",
+      "Age 50 and over",
+      "Self-employed",
+      "High-income earners"
     ],
-    correctAnswer: "$7,000",
-    explanation: "Contribution limits are set by the IRS and periodically adjust for inflation. For 2024, the limit is $7,000 for those under 50.",
+    correctAnswer: "Age 50 and over",
+    explanation: "To help those nearing retirement save more, the IRS allows individuals aged 50 and older to contribute an additional amount to their IRA each year, above the standard limit.",
     section: "Tickers + Brokerage Accounts + IRA Basics"
   },
   {
     id: 39,
-    question: "Buy & Hold works because:",
+    question: "The Efficient Market Hypothesis (EMH) suggests what?",
     options: [
-      "short term timing is easy",
-      "long term market growth dominates temporary dips",
-      "dividend yields never drop",
-      "markets always go straight up daily"
+      "Markets are always irrational and easy to beat.",
+      "Stock prices fully reflect all available information, making it difficult to consistently outperform the market.",
+      "Only large-cap stocks are priced efficiently.",
+      "Technical analysis is the only way to find undervalued stocks."
     ],
-    correctAnswer: "long term market growth dominates temporary dips",
-    explanation: "The 'Buy and Hold' strategy is effective because, over the long run, the general upward trend of the market tends to overcome short-term volatility and downturns.",
+    correctAnswer: "Stock prices fully reflect all available information, making it difficult to consistently outperform the market.",
+    explanation: "EMH is the theoretical foundation for passive investing. It argues that since all information is already priced in, trying to find 'bargains' is futile, and the best strategy is to simply own the market through an index fund.",
     section: "Core Strategies"
   },
   {
     id: 40,
-    question: "Indexing strategy means:",
+    question: "The main appeal of a 'Total Stock Market Index Fund' over an S&P 500 fund is that it also includes:",
     options: [
-      "you attempt to outperform the market",
-      "you own the market itself",
-      "day trading",
-      "penny stocks only"
+      "International stocks",
+      "Mid-cap and small-cap stocks",
+      "Government bonds",
+      "Real estate investment trusts (REITs)"
     ],
-    correctAnswer: "you own the market itself",
-    explanation: "An indexing strategy involves buying funds that track a broad market index (like the S&P 500). Instead of trying to beat the market, you aim to match its performance, effectively 'owning' a piece of the entire market.",
+    correctAnswer: "Mid-cap and small-cap stocks",
+    explanation: "A total market fund provides even broader diversification than an S&P 500 fund by including thousands of mid- and small-cap stocks, giving you exposure to the entire U.S. stock market.",
     section: "Core Strategies"
   },
   {
     id: 41,
-    question: "Dividend Growth strategy:",
+    question: "A key metric for a Dividend Growth investor is a company's:",
     options: [
-      "focuses on companies that increase payouts over time",
-      "focuses on only IPOs",
-      "focuses on FX trading",
-      "bans ETFs"
+      "Recent IPO date",
+      "Highest all-time stock price",
+      "History of consistently increasing its dividend payout.",
+      "Level of social media hype."
     ],
-    correctAnswer: "focuses on companies that increase payouts over time",
-    explanation: "This strategy involves investing in companies with a strong history of consistently increasing their dividend payments, providing a growing stream of income and signaling financial health.",
+    correctAnswer: "History of consistently increasing its dividend payout.",
+    explanation: "This strategy prioritizes reliable, growing income. A long track record of dividend increases (like a 'Dividend Aristocrat') is a strong sign of financial health and shareholder-friendly management.",
     section: "Core Strategies"
   },
   {
     id: 42,
-    question: "Dollar Cost Averaging removes:",
+    question: "An investor who contributes $200 to an ETF every two weeks, regardless of the price, is practicing what strategy?",
     options: [
-      "diversification",
-      "emotional timing",
-      "compounding",
-      "tax benefits"
+      "Lump sum investing",
+      "Market timing",
+      "Dollar-cost averaging",
+      "Value investing"
     ],
-    correctAnswer: "emotional timing",
-    explanation: "By investing a fixed amount of money at regular intervals, Dollar-Cost Averaging (DCA) removes the temptation to 'time the market.' You buy more shares when prices are low and fewer when they are high, smoothing out your average cost.",
+    correctAnswer: "Dollar-cost averaging",
+    explanation: "Dollar-cost averaging is an unemotional, disciplined strategy. By investing a fixed amount on a regular schedule, you automatically buy more shares when prices are low and fewer when they are high.",
     section: "Core Strategies"
   },
   {
     id: 43,
-    question: "Core Market exposure =",
+    question: "A 'factor tilt' towards 'value' in a portfolio means you are...",
     options: [
-      "the foundation broad market exposure",
-      "niche industry bets",
-      "cash only",
-      "futures contracts"
+      "Only buying stocks that have gone up recently.",
+      "Overweighting your portfolio with stocks that are considered undervalued relative to their fundamentals.",
+      "Avoiding all technology stocks.",
+      "Investing only in companies with high dividend yields."
     ],
-    correctAnswer: "the foundation broad market exposure",
-    explanation: "The 'core' of a portfolio is its foundation, typically made up of broadly diversified index funds (like a total stock market fund) that provide exposure to the entire market.",
+    correctAnswer: "Overweighting your portfolio with stocks that are considered undervalued relative to their fundamentals.",
+    explanation: "Factor tilting involves deviating from a market-cap weighted index to emphasize specific characteristics (factors) like 'value' or 'size' that have historically been associated with higher returns.",
     section: "Designing Portfolios"
   },
   {
     id: 44,
-    question: "Factor tilts intentionally focus on:",
+    question: "Which of the following would be considered a 'thematic' investment?",
     options: [
-      "low return companies",
-      "specific characteristics (ex value, small cap, quality)",
-      "illegal securities",
-      "avoiding research"
+      "A Total Stock Market Index Fund",
+      "A U.S. Treasury Bond Fund",
+      "An ETF that invests only in cybersecurity companies",
+      "A Large-Cap Value ETF"
     ],
-    correctAnswer: "specific characteristics (ex value, small cap, quality)",
-    explanation: "Factor 'tilting' is an investment strategy where you intentionally overweight parts of your portfolio toward specific factors (like 'value' or 'small-cap') that have historically shown potential to outperform the broader market.",
+    correctAnswer: "An ETF that invests only in cybersecurity companies",
+    explanation: "Thematic investing focuses on specific, long-term trends (like cybersecurity, robotics, or clean energy) rather than traditional sectors or market caps.",
     section: "Designing Portfolios"
   },
   {
     id: 45,
-    question: "Themes include:",
+    question: "What is 'correlation' in portfolio management?",
     options: [
-      "only grocery stores",
-      "AI, clean energy, robotics etc",
-      "only oil & gas",
-      "bonds only"
+      "A measure of a stock's dividend yield.",
+      "How closely the returns of two assets move in relation to each other.",
+      "The annual fee of a mutual fund.",
+      "The speed at which a trade is executed."
     ],
-    correctAnswer: "AI, clean energy, robotics etc",
-    explanation: "Thematic investing involves focusing on specific long-term trends or ideas, such as artificial intelligence, clean energy, or robotics, that are expected to shape the future.",
+    correctAnswer: "How closely the returns of two assets move in relation to each other.",
+    explanation: "Diversification works by combining assets with low or negative correlation. For example, stocks and bonds often have low correlation, so when one goes down, the other may go up, smoothing out portfolio returns.",
     section: "Designing Portfolios"
   },
   {
     id: 46,
-    question: "Hedge/Defense exposures:",
+    question: "Which of these is considered a 'hedge' against inflation?",
     options: [
-      "exist to stabilize volatility",
-      "exist for fast growth",
-      "are illegal in IRAs",
-      "are for day traders only"
+      "Holding cash in a checking account.",
+      "A long-term fixed-rate government bond.",
+      "Treasury Inflation-Protected Securities (TIPS).",
+      "A certificate of deposit (CD) with a 1% interest rate."
     ],
-    correctAnswer: "exist to stabilize volatility",
-    explanation: "Defensive assets, like bonds or gold, are included in a portfolio to act as a hedge, helping to stabilize returns and reduce volatility during stock market downturns.",
+    correctAnswer: "Treasury Inflation-Protected Securities (TIPS).",
+    explanation: "TIPS are a type of U.S. Treasury bond where the principal value adjusts with inflation. This feature specifically protects the investor's purchasing power, making them a direct hedge.",
     section: "Designing Portfolios"
   },
   {
     id: 47,
-    question: "Rebalancing exists to:",
+    question: "What is 'rebalancing risk'?",
     options: [
-      "chase top performing assets",
-      "bring portfolio back to target allocation",
-      "collect more fees",
-      "increase volatility"
+      "The risk of your portfolio drifting from its target allocation.",
+      "The risk that rebalancing forces you to sell high and buy low.",
+      "The risk that transaction costs and taxes from rebalancing will slightly reduce returns.",
+      "The risk that your broker will not allow you to rebalance."
     ],
-    correctAnswer: "bring portfolio back to target allocation",
-    explanation: "Rebalancing is the process of periodically buying or selling assets to maintain your original desired asset allocation and, most importantly, your intended level of risk.",
+    correctAnswer: "The risk that transaction costs and taxes from rebalancing will slightly reduce returns.",
+    explanation: "While rebalancing is crucial for risk management, the act of selling assets can incur transaction fees and, in taxable accounts, capital gains taxes. This is a minor 'cost' of the strategy.",
     section: "Rebalancing"
   },
   {
     id: 48,
-    question: "If U.S. stocks surge and go overweight, rebalancing likely means:",
+    question: "An investor has a target of 60% stocks / 40% bonds. After a strong year for stocks, the portfolio is now 70/30. What does rebalancing entail?",
     options: [
-      "adding more U.S stocks",
-      "selling some U.S stocks & adding to lagging areas",
-      "closing IRA",
-      "switching to all bonds"
+      "Buying more stocks to continue the momentum.",
+      "Selling bonds to buy more stocks.",
+      "Selling stocks to buy more bonds.",
+      "Doing nothing and letting the winners run."
     ],
-    correctAnswer: "selling some U.S stocks & adding to lagging areas",
-    explanation: "To rebalance, you would sell some of the asset that has become overweight (U.S. stocks) and use the proceeds to buy more of the underweight assets, bringing your portfolio back to its target percentages.",
+    correctAnswer: "Selling stocks to buy more bonds.",
+    explanation: "Rebalancing is a disciplined 'buy low, sell high' process. You sell the asset class that has performed well (and is now overweight) to buy the asset class that has underperformed (and is now underweight).",
     section: "Rebalancing"
   },
   {
     id: 49,
-    question: "Rebalancing is primarily about:",
+    question: "What is 'rebalancing based on tolerance bands'?",
     options: [
-      "tax fraud",
-      "risk control",
-      "trend following",
-      "hyper trading"
+      "Rebalancing on a fixed schedule, like annually.",
+      "Rebalancing only when your risk tolerance changes.",
+      "Rebalancing only when an asset class deviates from its target by a set percentage (e.g., 5%).",
+      "A strategy that avoids rebalancing altogether."
     ],
-    correctAnswer: "risk control",
-    explanation: "The main purpose of rebalancing is to manage risk. Without it, a portfolio can become too concentrated in a single asset class, exposing you to more risk than you originally intended.",
+    correctAnswer: "Rebalancing only when an asset class deviates from its target by a set percentage (e.g., 5%).",
+    explanation: "This is a more dynamic approach than calendar-based rebalancing. It avoids unnecessary trades but ensures the portfolio's risk profile doesn't drift too far from the intended target.",
     section: "Rebalancing"
   },
   {
     id: 50,
-    question: "A portfolio that is never rebalanced will:",
+    question: "A portfolio that is never rebalanced is likely to become:",
     options: [
-      "always stay at target",
-      "drift and become a different risk mix than intended",
-      "automatically reduce risk",
-      "automatically delete exposure"
+      "More conservative over time.",
+      "Perfectly aligned with its original target.",
+      "More concentrated and riskier than intended.",
+      "More tax-efficient than a rebalanced portfolio."
     ],
-    correctAnswer: "drift and become a different risk mix than intended",
-    explanation: "Over time, different assets grow at different rates. Without rebalancing, your portfolio will 'drift' away from its original allocation, potentially becoming much riskier or more conservative than you planned.",
+    correctAnswer: "More concentrated and riskier than intended.",
+    explanation: "Over time, the higher-growth assets (typically stocks) will make up a larger and larger percentage of the portfolio. This 'portfolio drift' leads to a risk level that is much higher than what the investor originally planned for.",
     section: "Rebalancing"
   }
 ];
