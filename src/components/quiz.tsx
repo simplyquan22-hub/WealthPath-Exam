@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { quizData } from '@/lib/quiz-data';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -27,12 +27,33 @@ const sections = quizData.reduce((acc, question) => {
 
 const sectionNames = Object.keys(sections);
 
+const getInitialState = <T,>(key: string, defaultValue: T): T => {
+  if (typeof window === 'undefined') {
+    return defaultValue;
+  }
+  try {
+    const item = window.localStorage.getItem(key);
+    return item ? JSON.parse(item) : defaultValue;
+  } catch (error) {
+    console.warn(`Error reading localStorage key “${key}”:`, error);
+    return defaultValue;
+  }
+};
+
+
 export function Quiz() {
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
-  const [isFinished, setIsFinished] = useState(false);
-  const [score, setScore] = useState(0);
+  const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(() => getInitialState('quizCurrentQuestionIndex', 0));
+  const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>(() => getInitialState('quizSelectedAnswers', {}));
+  const [isFinished, setIsFinished] = useState<boolean>(() => getInitialState('quizIsFinished', false));
+  const [score, setScore] = useState<number>(() => getInitialState('quizScore', 0));
   const [showFeedback, setShowFeedback] = useState(false);
+
+  useEffect(() => {
+    window.localStorage.setItem('quizCurrentQuestionIndex', JSON.stringify(currentQuestionIndex));
+    window.localStorage.setItem('quizSelectedAnswers', JSON.stringify(selectedAnswers));
+    window.localStorage.setItem('quizIsFinished', JSON.stringify(isFinished));
+    window.localStorage.setItem('quizScore', JSON.stringify(score));
+  }, [currentQuestionIndex, selectedAnswers, isFinished, score]);
   
   const currentQuestion = useMemo(() => quizData[currentQuestionIndex], [currentQuestionIndex]);
   const selectedAnswer = selectedAnswers[currentQuestionIndex];
@@ -67,6 +88,12 @@ export function Quiz() {
     setIsFinished(false);
     setScore(0);
     setShowFeedback(false);
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem('quizCurrentQuestionIndex');
+      window.localStorage.removeItem('quizSelectedAnswers');
+      window.localStorage.removeItem('quizIsFinished');
+      window.localStorage.removeItem('quizScore');
+    }
   };
   
   const scorePercentage = (score / quizData.length) * 100;
