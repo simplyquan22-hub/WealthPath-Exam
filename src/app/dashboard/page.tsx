@@ -12,45 +12,70 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, LogOut } from 'lucide-react';
+import { useFirebase } from '@/firebase';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 
 interface QuizHistoryEntry {
+  id: string;
   score: number;
   totalQuestions: number;
-  dateTaken: string;
-  id: string;
+  dateTaken: string; // Stored as ISO string
 }
 
 export default function DashboardPage() {
   const [quizHistory, setQuizHistory] = useState<QuizHistoryEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+  const { auth, firestore, user, isUserLoading } = useFirebase();
 
   useEffect(() => {
-    // localStorage is a client-side only feature
-    try {
-      const savedHistory = localStorage.getItem('quizHistory');
-      if (savedHistory) {
-        setQuizHistory(JSON.parse(savedHistory));
-      }
-    } catch (error) {
-      console.error("Could not parse quiz history from localStorage", error);
-    } finally {
-      setIsLoading(false);
+    if (!isUserLoading && !user) {
+      // If loading is finished and there's no user, redirect to login
+      router.push('/login?redirect=/dashboard');
     }
-  }, []);
+  }, [user, isUserLoading, router]);
+
+  useEffect(() => {
+    const fetchHistory = async () => {
+      if (!firestore || !user) return;
+      try {
+        setIsLoading(true);
+        const historyCollection = collection(firestore, `users/${user.uid}/quizHistory`);
+        const q = query(historyCollection, orderBy('dateTaken', 'asc'));
+        const querySnapshot = await getDocs(q);
+        const history = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as QuizHistoryEntry));
+        setQuizHistory(history);
+      } catch (error) {
+        console.error("Could not fetch quiz history from Firestore", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (user) {
+      fetchHistory();
+    }
+  }, [firestore, user]);
 
   const chartData = useMemo(() => {
-    if (!quizHistory) return [];
-    // Sort by date to ensure the chart is chronological
-    const sortedHistory = [...quizHistory].sort((a, b) => new Date(a.dateTaken).getTime() - new Date(b.dateTaken).getTime());
-    return sortedHistory.map(entry => ({
+    return quizHistory.map(entry => ({
       date: format(parseISO(entry.dateTaken), 'MMM d'),
       score: (entry.score / entry.totalQuestions) * 100,
     }));
   }, [quizHistory]);
+  
+  const handleSignOut = async () => {
+    if (!auth) return;
+    try {
+      await auth.signOut();
+      router.push('/login');
+    } catch (error) {
+      console.error("Error signing out: ", error);
+    }
+  };
 
-  if (isLoading) {
+  if (isLoading || isUserLoading) {
     return (
       <div className="container mx-auto py-8 px-4 md:px-8">
         <div className="space-y-6">
@@ -65,10 +90,18 @@ export default function DashboardPage() {
   return (
     <div className="container mx-auto py-8 px-4 md:px-8">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold">Your Progress</h1>
-        <Button asChild variant="outline">
-           <Link href="/"><ArrowLeft className="mr-2 h-4 w-4" /> Back to Quiz</Link>
-        </Button>
+        <div>
+            <h1 className="text-3xl font-bold">Your Progress</h1>
+            <p className="text-muted-foreground">Welcome back, {user?.displayName || 'learner'}!</p>
+        </div>
+        <div className="flex items-center gap-2">
+            <Button asChild variant="outline">
+               <Link href="/"><ArrowLeft className="mr-2 h-4 w-4" /> Back to Quiz</Link>
+            </Button>
+            <Button onClick={handleSignOut} variant="destructive">
+               <LogOut className="mr-2 h-4 w-4" /> Sign Out
+            </Button>
+        </div>
       </div>
 
 
@@ -143,7 +176,7 @@ export default function DashboardPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {[...quizHistory].reverse().map(entry => (
+                  {[...quizHistory].sort((a, b) => new Date(b.dateTaken).getTime() - new Date(a.dateTaken).getTime()).map(entry => (
                       <TableRow key={entry.id}>
                         <TableCell>{format(parseISO(entry.dateTaken), 'MMMM d, yyyy')}</TableCell>
                         <TableCell>{entry.score} / {entry.totalQuestions}</TableCell>

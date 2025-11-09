@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { useFirebase } from '@/firebase';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
-import { doc, setDoc, getDoc, User } from 'firebase/firestore';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 const GoogleIcon = () => (
   <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
@@ -39,17 +39,17 @@ const AppleIcon = () => (
 )
 
 export default function LoginPage() {
-  const { auth, firestore, user } = useFirebase();
+  const { auth, firestore, user, isUserLoading } = useFirebase();
   const router = useRouter();
   const searchParams = useSearchParams();
 
   useEffect(() => {
     // if user is already logged in, redirect them
-    if (user) {
+    if (!isUserLoading && user) {
       const redirect = searchParams.get('redirect') || '/dashboard';
       router.push(redirect);
     }
-  }, [user, router, searchParams]);
+  }, [user, isUserLoading, router, searchParams]);
 
   const handleSuccessfulSignIn = async (user: any) => {
     if (!firestore) return;
@@ -90,6 +90,16 @@ export default function LoginPage() {
       console.error("Error signing in with Apple: ", error);
     }
   };
+
+  if (isUserLoading || user) {
+    return (
+       <div className="flex items-center justify-center min-h-[calc(100vh-200px)]">
+          <div className="text-center">
+             <p className="text-muted-foreground">Loading...</p>
+          </div>
+       </div>
+    );
+  }
 
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-200px)]">

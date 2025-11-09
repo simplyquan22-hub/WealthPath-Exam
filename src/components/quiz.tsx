@@ -14,6 +14,8 @@ import Celebration from './celebration';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import Link from 'next/link';
 import { explainAnswer, type ExplainAnswerInput } from '@/ai/flows/explain-answer-flow';
+import { useFirebase } from '@/firebase';
+import { addDoc, collection } from 'firebase/firestore';
 
 // Group questions by section
 const sections = quizData.reduce((acc, question) => {
@@ -106,6 +108,7 @@ export function Quiz() {
   const [selectedAnswers, setSelectedAnswers] = useState<Record<number, string>>({});
   const [isFinished, setIsFinished] = useState<boolean>(false);
   const [showFeedback, setShowFeedback] = useState(false);
+  const { firestore, user } = useFirebase();
   
   const currentQuestion = useMemo(() => quizData[currentQuestionIndex], [currentQuestionIndex]);
   const selectedAnswer = selectedAnswers[currentQuestionIndex];
@@ -139,24 +142,25 @@ export function Quiz() {
   }, [isFinished, selectedAnswers]);
 
   useEffect(() => {
-    if (isFinished) {
-      const newHistoryEntry = {
-        score: finalScore,
-        totalQuestions: quizData.length,
-        dateTaken: new Date().toISOString(),
-        id: new Date().getTime().toString()
-      };
-      
-      try {
-        const savedHistory = localStorage.getItem('quizHistory');
-        const history = savedHistory ? JSON.parse(savedHistory) : [];
-        history.push(newHistoryEntry);
-        localStorage.setItem('quizHistory', JSON.stringify(history));
-      } catch (error) {
-        console.error("Failed to save quiz history to localStorage", error);
-      }
-    }
-  }, [isFinished, finalScore]);
+    const saveHistory = async () => {
+        if (isFinished && firestore && user) {
+            const newHistoryEntry = {
+                score: finalScore,
+                totalQuestions: quizData.length,
+                dateTaken: new Date().toISOString(),
+                userId: user.uid
+            };
+
+            try {
+                const historyCollection = collection(firestore, `users/${user.uid}/quizHistory`);
+                await addDoc(historyCollection, newHistoryEntry);
+            } catch (error) {
+                console.error("Failed to save quiz history to Firestore", error);
+            }
+        }
+    };
+    saveHistory();
+  }, [isFinished, finalScore, firestore, user]);
 
   const handleReset = () => {
     setCurrentQuestionIndex(0);
@@ -264,11 +268,13 @@ export function Quiz() {
             <Button onClick={handleReset} size="lg" variant="outline">
               <RotateCw className="mr-2 h-4 w-4" /> Try Again
             </Button>
-            <Button asChild size="lg">
-              <Link href="/dashboard">
-                <LineChart className="mr-2 h-4 w-4" /> View My Progress
-              </Link>
-            </Button>
+            {user && (
+              <Button asChild size="lg">
+                <Link href="/dashboard">
+                  <LineChart className="mr-2 h-4 w-4" /> View My Progress
+                </Link>
+              </Button>
+            )}
           </CardFooter>
         </Card>
     );

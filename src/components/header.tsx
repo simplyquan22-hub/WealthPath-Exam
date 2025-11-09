@@ -1,27 +1,31 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Button } from './ui/button';
-import { LineChart } from 'lucide-react';
+import { LineChart, LogIn, LogOut, User } from 'lucide-react';
+import { useFirebase } from '@/firebase';
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { auth, user, isUserLoading } = useFirebase();
 
-  // Don't render header on the main quiz page
-  if (pathname === '/') {
+  const handleSignOut = async () => {
+    if (!auth) return;
+    try {
+      await auth.signOut();
+      // After sign out, redirect to a public page, like the home page.
+      router.push('/');
+    } catch (error) {
+      console.error("Error signing out: ", error);
+    }
+  };
+
+  // Don't render header on the main quiz page if user is not logged in.
+  if (pathname === '/' && !user) {
     return null;
   }
-  
-  // Don't render header if dashboard page doesn't exist
-  if (pathname === '/dashboard') {
-     try {
-      require.resolve('@/app/dashboard/page.tsx');
-    } catch (e) {
-      return null;
-    }
-  }
-
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -32,12 +36,32 @@ export default function Header() {
           </Link>
         </div>
         <div className="flex flex-1 items-center justify-end space-x-2">
-          <Button asChild variant="ghost">
-            <Link href="/dashboard">
-                <LineChart className="mr-2 h-4 w-4" />
-                My Progress
-            </Link>
-          </Button>
+          {isUserLoading ? (
+             <div className="h-8 w-20 animate-pulse rounded-md bg-muted" />
+          ) : user ? (
+            <>
+              <span className="text-sm text-muted-foreground hidden sm:inline">
+                Welcome, {user.displayName || 'User'}
+              </span>
+               <Button asChild variant="ghost">
+                <Link href="/dashboard">
+                    <LineChart className="mr-2 h-4 w-4" />
+                    My Progress
+                </Link>
+              </Button>
+              <Button onClick={handleSignOut} variant="outline" size="sm">
+                <LogOut className="mr-2 h-4 w-4" />
+                Sign Out
+              </Button>
+            </>
+          ) : (
+            <Button asChild>
+                <Link href="/login">
+                    <LogIn className="mr-2 h-4 w-4" />
+                    Sign In
+                </Link>
+            </Button>
+          )}
         </div>
       </div>
     </header>

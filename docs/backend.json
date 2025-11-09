@@ -1,1 +1,78 @@
-{}
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Represents a user's profile information.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The user's unique ID."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The user's email address."
+        },
+        "name": {
+          "type": "string",
+          "description": "The user's display name."
+        },
+        "quizHistoryIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "An array of IDs referencing the user's quiz history."
+        }
+      },
+      "required": ["id", "email"]
+    },
+    "QuizHistory": {
+      "title": "Quiz History",
+      "description": "Represents a single quiz attempt by a user.",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "The unique ID for this quiz attempt."
+        },
+        "userId": {
+          "type": "string",
+          "description": "The ID of the user who took the quiz."
+        },
+        "score": {
+          "type": "number",
+          "description": "The number of questions the user answered correctly."
+        },
+        "totalQuestions": {
+          "type": "number",
+          "description": "The total number of questions in the quiz."
+        },
+        "dateTaken": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The ISO 8601 timestamp of when the quiz was completed."
+        }
+      },
+      "required": ["id", "userId", "score", "totalQuestions", "dateTaken"]
+    }
+  },
+  "auth": {
+    "providers": ["google.com", "apple.com"]
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "Stores public profile information for each user."
+    },
+    "/users/{userId}/quizHistory/{historyId}": {
+      "schema": {
+        "$ref": "#/entities/QuizHistory"
+      },
+      "description": "Stores the quiz history for a specific user."
+    }
+  }
+}

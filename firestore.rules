@@ -1,11 +1,14 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // This rule allows anyone with access to your database to read or write
-    // to any document in your database. It is not recommended for production
-    // apps.
-    match /{document=**} {
-      allow read, write: if true;
+    // Users can only read and write their own profile data.
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Users can only read and write their own quiz history.
+    match /users/{userId}/quizHistory/{historyId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
     }
   }
 }
