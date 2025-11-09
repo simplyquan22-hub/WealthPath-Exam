@@ -5,7 +5,7 @@ export default function Home() {
     <div className="flex flex-col items-center p-4 sm:p-8 md:p-12">
       <header className="w-full max-w-4xl mb-8 flex items-center justify-center gap-4">
         <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-foreground font-headline">
-          WealthPath's Test
+          WealthPath’s Knowledge Check-in
         </h1>
       </header>
       <div className="w-full max-w-4xl text-center mb-8">
