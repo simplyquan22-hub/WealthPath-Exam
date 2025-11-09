@@ -1,0 +1,271 @@
+{
+  "entities": {
+    "UserProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserProfile",
+      "type": "object",
+      "description": "Represents a user profile with their personal information and quiz history.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user profile."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the user.",
+          "format": "email"
+        },
+        "name": {
+          "type": "string",
+          "description": "Full name of the user."
+        },
+        "quizHistoryIds": {
+          "type": "array",
+          "description": "References to QuizHistory. (Relationship: UserProfile 1:N QuizHistory)",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "name"
+      ]
+    },
+    "QuizHistory": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "QuizHistory",
+      "type": "object",
+      "description": "Represents a user's quiz history, including the score and the quiz taken.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the quiz history entry."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N QuizHistory)"
+        },
+        "quizId": {
+          "type": "string",
+          "description": "Reference to Quiz. (Relationship: Quiz 1:N QuizHistory)"
+        },
+        "score": {
+          "type": "number",
+          "description": "The score the user achieved on the quiz."
+        },
+        "dateTaken": {
+          "type": "string",
+          "description": "The date and time the quiz was taken.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "quizId",
+        "score",
+        "dateTaken"
+      ]
+    },
+    "Quiz": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Quiz",
+      "type": "object",
+      "description": "Represents a quiz containing multiple questions",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the quiz."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the quiz."
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the quiz."
+        },
+        "questionIds": {
+          "type": "array",
+          "description": "References to Questions. (Relationship: Quiz 1:N Question)",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ]
+    },
+    "Question": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Question",
+      "type": "object",
+      "description": "Represents a question within a quiz.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the question."
+        },
+        "quizId": {
+          "type": "string",
+          "description": "Reference to Quiz. (Relationship: Quiz 1:N Question)"
+        },
+        "text": {
+          "type": "string",
+          "description": "The text of the question."
+        },
+        "correctAnswer": {
+          "type": "string",
+          "description": "Correct answer id. Reference to Answer. (Relationship: Question 1:1 Answer)"
+        },
+        "answerIds": {
+          "type": "array",
+          "description": "References to Answers. (Relationship: Question 1:N Answer)",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "text",
+        "correctAnswer"
+      ]
+    },
+    "Answer": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Answer",
+      "type": "object",
+      "description": "Represents an answer option for a question.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the answer."
+        },
+        "text": {
+          "type": "string",
+          "description": "The text of the answer."
+        },
+        "explanation": {
+          "type": "string",
+          "description": "Explanation of why this answer is correct/incorrect."
+        }
+      },
+      "required": [
+        "id",
+        "text"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "UserProfile",
+          "schema": {
+            "$ref": "#/backend/entities/UserProfile"
+          },
+          "description": "Stores user profile information. Only the authenticated user can read/write their own profile.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user, matching the Firebase Authentication UID."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/quizHistory/{quizHistoryId}",
+        "definition": {
+          "entityName": "QuizHistory",
+          "schema": {
+            "$ref": "#/backend/entities/QuizHistory"
+          },
+          "description": "Stores quiz history for each user. Only the authenticated user can read/write their own quiz history entries.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user, matching the Firebase Authentication UID."
+            },
+            {
+              "name": "quizHistoryId",
+              "description": "The unique identifier for the quiz history entry."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/quizzes/{quizId}",
+        "definition": {
+          "entityName": "Quiz",
+          "schema": {
+            "$ref": "#/backend/entities/Quiz"
+          },
+          "description": "Stores quizzes. Accessible to all authenticated users.",
+          "params": [
+            {
+              "name": "quizId",
+              "description": "The unique identifier for the quiz."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/quizzes/{quizId}/questions/{questionId}",
+        "definition": {
+          "entityName": "Question",
+          "schema": {
+            "$ref": "#/backend/entities/Question"
+          },
+          "description": "Stores questions within a quiz. Accessible to all authenticated users.",
+          "params": [
+            {
+              "name": "quizId",
+              "description": "The unique identifier for the quiz."
+            },
+            {
+              "name": "questionId",
+              "description": "The unique identifier for the question."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/quizzes/{quizId}/questions/{questionId}/answers/{answerId}",
+        "definition": {
+          "entityName": "Answer",
+          "schema": {
+            "$ref": "#/backend/entities/Answer"
+          },
+          "description": "Stores answers for each question. Accessible to all authenticated users.",
+          "params": [
+            {
+              "name": "quizId",
+              "description": "The unique identifier for the quiz."
+            },
+            {
+              "name": "questionId",
+              "description": "The unique identifier for the question."
+            },
+            {
+              "name": "answerId",
+              "description": "The unique identifier for the answer."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to support user accounts, quiz history, and progress tracking for the WealthPath Courses Test application. The structure prioritizes authorization independence using path-based ownership for private user data and avoids `get()` calls in security rules. This structure supports efficient data retrieval and ensures robust security and scalability.\n\n*   **User Profiles:** User profiles are stored under `/users/{userId}`. This enables simple path-based security rules based on `request.auth.uid`. Each user can only access their profile.\n*   **Quiz History:** Quiz history entries are stored under `/users/{userId}/quizHistory/{quizHistoryId}`. This structure establishes a clear ownership pattern where each user owns their quiz history. Quiz history documents include the `quizId` to reference a quiz taken. This hierarchical structure enables efficient querying of a user's quiz history and simplifies security rules. Only the authenticated user can access their quiz history.\n*   **Quizzes and Questions:** The quizzes and questions are stored in collections called `/quizzes` and `/quizzes/{quizId}/questions`. These can be read by any authenticated user. The answers are located under `/quizzes/{quizId}/questions/{questionId}/answers/{answerId}`.\n\nThis design ensures Authorization Independence by utilizing the hierarchical path structure. QAPs (Rules Are Not Filters) are achieved through structural segregation. Each user has exclusive access to their data, and only authenticated users can access publicly available data. The database adheres to DBAC (Database-Based Access Control) principles, relying on `request.auth.uid` for identity verification and role management."
+  }
+}
