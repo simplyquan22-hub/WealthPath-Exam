@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useMemo } from 'react';
@@ -11,6 +12,18 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { CheckCircle2, XCircle, Lightbulb, RotateCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Celebration from './celebration';
+
+// Group questions by section
+const sections = quizData.reduce((acc, question) => {
+  const section = question.section || 'General';
+  if (!acc[section]) {
+    acc[section] = [];
+  }
+  acc[section].push(question);
+  return acc;
+}, {} as Record<string, typeof quizData>);
+
+const sectionNames = Object.keys(sections);
 
 export function Quiz() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -59,7 +72,7 @@ export function Quiz() {
 
   if (isFinished) {
     return (
-      <Card className="w-full max-w-2xl shadow-2xl">
+      <Card className="w-full max-w-4xl shadow-2xl">
         <CardHeader className="text-center">
           <CardTitle className="text-3xl font-bold">Quiz Complete!</CardTitle>
           <CardDescription className="text-lg">You scored {score} out of {quizData.length}</CardDescription>
@@ -67,29 +80,40 @@ export function Quiz() {
         </CardHeader>
         <CardContent>
           <h3 className="text-xl font-semibold mb-4 text-center">Review Your Answers</h3>
-          <Accordion type="single" collapsible className="w-full">
-            {quizData.map((question, index) => {
-              const userAnswer = selectedAnswers[index];
-              const isCorrect = userAnswer === question.correctAnswer;
-              return (
-                <AccordionItem value={`item-${index}`} key={question.id}>
-                  <AccordionTrigger className="text-left hover:no-underline">
-                    <div className="flex items-center gap-4 w-full">
-                      {isCorrect ? <CheckCircle2 className="text-green-500 h-5 w-5 flex-shrink-0" /> : <XCircle className="text-red-500 h-5 w-5 flex-shrink-0" />}
-                      <span className="flex-1">{question.question}</span>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent className="space-y-4">
-                    <p className={cn("p-2 rounded-md", isCorrect ? "bg-green-500/20" : "bg-red-500/20")}>Your answer: {userAnswer}</p>
-                    {!isCorrect && <p className="p-2 rounded-md bg-green-500/20">Correct answer: {question.correctAnswer}</p>}
-                    <div className="flex items-start gap-2 p-3 bg-muted/50 rounded-md">
-                      <Lightbulb className="h-5 w-5 text-accent flex-shrink-0 mt-1" />
-                      <p className="text-muted-foreground">{question.explanation}</p>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              );
-            })}
+          <Accordion type="multiple" className="w-full">
+            {sectionNames.map(sectionName => (
+              <AccordionItem value={sectionName} key={sectionName}>
+                <AccordionTrigger className="text-lg font-semibold hover:no-underline">
+                  {sectionName}
+                </AccordionTrigger>
+                <AccordionContent>
+                  <Accordion type="single" collapsible className="w-full">
+                    {sections[sectionName].map((question) => {
+                      const userAnswer = selectedAnswers[quizData.indexOf(question)];
+                      const isCorrect = userAnswer === question.correctAnswer;
+                      return (
+                        <AccordionItem value={`item-${question.id}`} key={question.id}>
+                          <AccordionTrigger className="text-left hover:no-underline">
+                            <div className="flex items-center gap-4 w-full">
+                              {isCorrect ? <CheckCircle2 className="text-green-500 h-5 w-5 flex-shrink-0" /> : <XCircle className="text-red-500 h-5 w-5 flex-shrink-0" />}
+                              <span className="flex-1">{question.question}</span>
+                            </div>
+                          </AccordionTrigger>
+                          <AccordionContent className="space-y-4">
+                            <p className={cn("p-2 rounded-md", isCorrect ? "bg-green-500/20" : "bg-red-500/20")}>Your answer: {userAnswer}</p>
+                            {!isCorrect && <p className="p-2 rounded-md bg-green-500/20">Correct answer: {question.correctAnswer}</p>}
+                            <div className="flex items-start gap-2 p-3 bg-muted/50 rounded-md">
+                              <Lightbulb className="h-5 w-5 text-accent flex-shrink-0 mt-1" />
+                              <p className="text-muted-foreground">{question.explanation}</p>
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      );
+                    })}
+                  </Accordion>
+                </AccordionContent>
+              </AccordionItem>
+            ))}
           </Accordion>
         </CardContent>
         <CardFooter className="justify-center">
@@ -105,7 +129,9 @@ export function Quiz() {
     <Card className="w-full max-w-2xl shadow-2xl relative overflow-hidden">
       {isCurrentAnswerCorrect && <Celebration />}
       <CardHeader>
-        <CardDescription>Question {currentQuestionIndex + 1} of {quizData.length}</CardDescription>
+        <CardDescription>
+          {currentQuestion.section} - Question {currentQuestionIndex + 1} of {quizData.length}
+        </CardDescription>
         <CardTitle className="text-2xl">{currentQuestion.question}</CardTitle>
       </CardHeader>
       <CardContent>
