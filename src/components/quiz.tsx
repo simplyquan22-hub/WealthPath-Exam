@@ -311,7 +311,7 @@ export function Quiz() {
                 className={cn(
                   "quiz-option-container font-medium",
                   showFeedback && isSelected && !isCorrect && "incorrect",
-                  showFeedback && isCorrect && "correct",
+                  showFeedback && isCorrect && isSelected && "correct",
                   isSelected && !showFeedback && "selected",
                   showFeedback && "disabled"
                 )}
