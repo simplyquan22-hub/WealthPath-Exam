@@ -4,8 +4,6 @@ import { useState, useMemo, useEffect } from 'react';
 import { quizData, type Question } from '@/lib/quiz-data';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
 import { Progress } from '@/components/ui/progress';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { CheckCircle2, XCircle, Lightbulb, RotateCw, Trophy, AlertTriangle, LineChart, Loader2 } from 'lucide-react';
@@ -113,12 +111,11 @@ export function Quiz() {
   const currentQuestion = useMemo(() => quizData[currentQuestionIndex], [currentQuestionIndex]);
   const selectedAnswer = selectedAnswers[currentQuestionIndex];
 
-    const finalScore = useMemo(() => {
-    if (!isFinished) return 0;
+  const finalScore = useMemo(() => {
     return quizData.reduce((acc, question, index) => {
       return selectedAnswers[index] === question.correctAnswer ? acc + 1 : acc;
     }, 0);
-  }, [isFinished, selectedAnswers]);
+  }, [selectedAnswers]);
 
   const weakestSection = useMemo(() => {
     if (!isFinished) return null;
@@ -196,7 +193,6 @@ export function Quiz() {
   const scorePercentage = (finalScore / quizData.length) * 100;
   const quizProgress = ((isFinished ? quizData.length : currentQuestionIndex) / quizData.length) * 100;
   const isCurrentAnswerCorrect = showFeedback && selectedAnswer === currentQuestion.correctAnswer;
-  
 
   if (isFinished) {
     const isGoodScore = scorePercentage >= 80;
@@ -211,7 +207,7 @@ export function Quiz() {
               <RotateCw className="mx-auto h-16 w-16 text-muted-foreground animate-in zoom-in-50" />
             )}
             <CardTitle className="text-3xl font-bold mt-4">
-              {isGoodScore ? "Congratulations! Fantastic work!" : "Keep Learning!"}
+              {isGoodScore ? "Congratulations! You're on the right path!" : "Keep Learning!"}
             </CardTitle>
             <CardDescription className="text-lg">You scored {finalScore} out of {quizData.length}</CardDescription>
             <div className="relative pt-4 max-w-sm mx-auto">
@@ -296,39 +292,37 @@ export function Quiz() {
       </CardHeader>
      
       <CardContent className="p-6">
-        <RadioGroup
-          value={selectedAnswer}
-          onValueChange={handleAnswerSelect}
-          className="space-y-3"
-          disabled={showFeedback}
-        >
+        <div className="space-y-3">
           {currentQuestion.options.map((option, index) => {
             const isSelected = selectedAnswer === option;
             const isCorrect = currentQuestion.correctAnswer === option;
-            const id = `q${currentQuestion.id}-opt${index}`;
+
             return (
-              <Label
-                  key={id}
-                  htmlFor={id}
-                  className={cn(
-                    "flex items-center p-4 rounded-lg border-2 transition-all cursor-pointer bg-muted/30 hover:bg-muted/70",
-                    "has-[:disabled]:cursor-not-allowed has-[:disabled]:opacity-70",
-                    isSelected && "border-primary bg-primary/10",
-                    showFeedback && isSelected && !isCorrect && "bg-red-500/20 border-red-500/50 text-foreground animate-in shake",
-                    showFeedback && isCorrect && "bg-green-500/20 border-green-500/50 text-foreground",
-                  )}
-                >
-                  <RadioGroupItem
-                    value={option}
-                    id={id}
-                    className="mr-4 size-5"
-                    disabled={showFeedback}
-                  />
-                  <span className="flex-1 font-medium">{option}</span>
-                </Label>
+              <label
+                key={index}
+                className={cn(
+                  "quiz-option-container font-medium",
+                  showFeedback && isSelected && !isCorrect && "incorrect",
+                  showFeedback && isCorrect && "correct",
+                  isSelected && !showFeedback && "selected",
+                  showFeedback && "disabled"
+                )}
+                onClick={() => handleAnswerSelect(option)}
+              >
+                <input
+                  type="radio"
+                  name={`q${currentQuestion.id}`}
+                  value={option}
+                  checked={isSelected}
+                  readOnly
+                  disabled={showFeedback}
+                />
+                <span className="checkmark"></span>
+                {option}
+              </label>
             );
           })}
-        </RadioGroup>
+        </div>
       </CardContent>
       <CardFooter className="justify-end items-center p-6 border-t bg-muted/30">
         <Button onClick={handleSubmit} disabled={!selectedAnswer || showFeedback} size="lg" className="w-full sm:w-auto">
