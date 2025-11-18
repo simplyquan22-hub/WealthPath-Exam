@@ -194,17 +194,16 @@ export function Quiz() {
   const scorePercentage = (finalScore / quizData.length) * 100;
   const quizProgress = ((isFinished ? quizData.length : currentQuestionIndex) / quizData.length) * 100;
   const isCurrentAnswerCorrect = showFeedback && selectedAnswer === currentQuestion.correctAnswer;
+  const isGoodScore = scorePercentage >= 80;
 
   if (isFinished) {
-    const isGoodScore = scorePercentage >= 80;
-
     return (
         <Card className="relative w-full max-w-4xl shadow-2xl overflow-hidden">
           {isGoodScore && <Celebration />}
           <CardHeader className="text-center p-8 bg-card/80 backdrop-blur-sm z-10 relative">
             <Trophy className="mx-auto h-16 w-16 text-yellow-400 animate-in zoom-in-50" />
             <CardTitle className="text-3xl font-bold mt-4">
-              Congratulations! You're on the right path!
+              {isGoodScore ? "Excellent work!" : "Congratulations on finishing!"}
             </CardTitle>
             <CardDescription className="text-lg">You scored {finalScore} out of {quizData.length}</CardDescription>
             <div className="relative pt-4 max-w-sm mx-auto">
@@ -223,9 +222,11 @@ export function Quiz() {
               <Alert variant="destructive" className="mb-6 bg-yellow-500/10 border-yellow-500/50 text-yellow-200">
                 <AlertTriangle className="h-4 w-4 !text-yellow-500" />
                 <AlertTitle className="font-semibold !text-yellow-400">Focus Area</AlertTitle>
-                <AlertDescription>
-                   You seem to be struggling with the **{weakestSection}** section. We recommend reviewing this topic to strengthen your understanding.
-                </AlertDescription>
+                {weakestSection && (
+                    <AlertDescription>
+                    You seem to be struggling with the **{weakestSection}** section. We recommend reviewing this topic to strengthen your understanding.
+                    </AlertDescription>
+                )}
               </Alert>
             )}
             <h3 className="text-xl font-semibold mb-4 text-center">Review Your Answers</h3>

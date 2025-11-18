@@ -106,13 +106,17 @@ export default function DashboardPage() {
 
 
       {quizHistory.length === 0 ? (
-        <Card>
-          <CardContent className="h-[500px] flex flex-col items-center justify-center text-center">
-            <h2 className="text-2xl font-semibold">No Quizzes Taken Yet</h2>
-            <p className="mt-2 text-muted-foreground">
-              Complete a quiz to start tracking your progress!
-            </p>
-          </CardContent>
+        <Card className="relative group w-full">
+            <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-accent rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+            <CardContent className="relative h-[500px] flex flex-col items-center justify-center text-center bg-card/80 backdrop-blur-sm rounded-lg">
+                <h2 className="text-2xl font-semibold">No Quizzes Taken Yet</h2>
+                <p className="mt-2 text-muted-foreground max-w-sm">
+                Your journey to financial mastery is just beginning. Complete a quiz to start tracking your progress and see your knowledge grow!
+                </p>
+                <Button asChild size="lg" className="mt-6">
+                    <Link href="/">Take Your First Quiz</Link>
+                </Button>
+            </CardContent>
         </Card>
       ) : (
         <>

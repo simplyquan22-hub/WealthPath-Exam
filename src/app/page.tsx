@@ -1,6 +1,5 @@
 
 import { Quiz } from "@/components/quiz";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import { BookOpen } from "lucide-react";
@@ -30,7 +29,7 @@ export default function Home() {
             <Link href="https://docs.google.com/document/d/1-xCGlcx5ap2YinQ21jWvljQ8uWdof6NqCzATqJzfcJ4/edit?usp=drivesdk" target="_blank" className="inline-block">
               <button className="btn">
                 <span>
-                  Get started
+                  Open Course PDF
                 </span>
               </button>
             </Link>
