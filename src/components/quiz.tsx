@@ -107,16 +107,15 @@ export function Quiz() {
   const [isFinished, setIsFinished] = useState<boolean>(false);
   const [showFeedback, setShowFeedback] = useState(false);
   const { firestore, user } = useFirebase();
-  
+
   const currentQuestion = useMemo(() => quizData[currentQuestionIndex], [currentQuestionIndex]);
   const selectedAnswer = selectedAnswers[currentQuestionIndex];
-
+  
   const finalScore = useMemo(() => {
-    if (!isFinished) return 0;
     return quizData.reduce((acc, question, index) => {
       return selectedAnswers[index] === question.correctAnswer ? acc + 1 : acc;
     }, 0);
-  }, [selectedAnswers, isFinished]);
+  }, [selectedAnswers]);
 
   const weakestSection = useMemo(() => {
     if (!isFinished) return null;
@@ -163,24 +162,26 @@ export function Quiz() {
   };
 
   useEffect(() => {
-    const saveHistory = async () => {
-        if (isFinished && firestore && user) {
-            const newHistoryEntry = {
-                score: finalScore,
-                totalQuestions: quizData.length,
-                dateTaken: new Date().toISOString(),
-                userId: user.uid
-            };
+    if (isFinished) {
+      const saveHistory = async () => {
+          if (firestore && user) {
+              const newHistoryEntry = {
+                  score: finalScore,
+                  totalQuestions: quizData.length,
+                  dateTaken: new Date().toISOString(),
+                  userId: user.uid
+              };
 
-            try {
-                const historyCollection = collection(firestore, `users/${user.uid}/quizHistory`);
-                await addDoc(historyCollection, newHistoryEntry);
-            } catch (error) {
-                console.error("Failed to save quiz history to Firestore", error);
-            }
-        }
-    };
-    saveHistory();
+              try {
+                  const historyCollection = collection(firestore, `users/${user.uid}/quizHistory`);
+                  await addDoc(historyCollection, newHistoryEntry);
+              } catch (error) {
+                  console.error("Failed to save quiz history to Firestore", error);
+              }
+          }
+      };
+      saveHistory();
+    }
   }, [isFinished, finalScore, firestore, user]);
 
   const handleReset = () => {
@@ -190,7 +191,7 @@ export function Quiz() {
     setShowFeedback(false);
   };
   
-  const scorePercentage = isFinished ? (finalScore / quizData.length) * 100 : 0;
+  const scorePercentage = (finalScore / quizData.length) * 100;
   const quizProgress = ((isFinished ? quizData.length : currentQuestionIndex) / quizData.length) * 100;
   const isCurrentAnswerCorrect = showFeedback && selectedAnswer === currentQuestion.correctAnswer;
 
@@ -201,17 +202,13 @@ export function Quiz() {
         <Card className="relative w-full max-w-4xl shadow-2xl overflow-hidden">
           {isGoodScore && <Celebration />}
           <CardHeader className="text-center p-8 bg-card/80 backdrop-blur-sm z-10 relative">
-            {isGoodScore ? (
-              <Trophy className="mx-auto h-16 w-16 text-yellow-400 animate-in zoom-in-50" />
-            ) : (
-              <RotateCw className="mx-auto h-16 w-16 text-muted-foreground animate-in zoom-in-50" />
-            )}
+            <Trophy className="mx-auto h-16 w-16 text-yellow-400 animate-in zoom-in-50" />
             <CardTitle className="text-3xl font-bold mt-4">
-              {isGoodScore ? "Congratulations! You're on the right path!" : "Keep Learning!"}
+              Congratulations! You're on the right path!
             </CardTitle>
             <CardDescription className="text-lg">You scored {finalScore} out of {quizData.length}</CardDescription>
             <div className="relative pt-4 max-w-sm mx-auto">
-              <Progress value={scorePercentage} className={cn("h-4", isGoodScore ? "" : "bg-destructive/30")} />
+              <Progress value={scorePercentage} className="h-4" />
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 font-bold text-sm mix-blend-difference text-white">{Math.round(scorePercentage)}%</div>
             </div>
              <p className="text-muted-foreground mt-4 text-base max-w-xl mx-auto">
@@ -227,7 +224,7 @@ export function Quiz() {
                 <AlertTriangle className="h-4 w-4 !text-yellow-500" />
                 <AlertTitle className="font-semibold !text-yellow-400">Focus Area</AlertTitle>
                 <AlertDescription>
-                  You seem to be struggling with the **{weakestSection}** section. We recommend reviewing this topic to strengthen your understanding.
+                   You seem to be struggling with the **{weakestSection}** section. We recommend reviewing this topic to strengthen your understanding.
                 </AlertDescription>
               </Alert>
             )}
@@ -325,9 +322,11 @@ export function Quiz() {
         </div>
       </CardContent>
       <CardFooter className="justify-end items-center p-6 border-t bg-muted/30">
-        <Button onClick={handleSubmit} disabled={!selectedAnswer || showFeedback} size="lg" className="w-full sm:w-auto">
-          {showFeedback ? (isCurrentAnswerCorrect ? 'Correct!' : 'Incorrect') : (currentQuestionIndex === quizData.length - 1 ? 'Finish Quiz' : 'Next Question')}
-        </Button>
+        <button className="btn w-full sm:w-auto" onClick={handleSubmit} disabled={!selectedAnswer || showFeedback}>
+            <span>
+                {showFeedback ? (isCurrentAnswerCorrect ? 'Correct!' : 'Incorrect') : (currentQuestionIndex === quizData.length - 1 ? 'Finish Quiz' : 'Next Question')}
+            </span>
+        </button>
       </CardFooter>
     </Card>
   );
