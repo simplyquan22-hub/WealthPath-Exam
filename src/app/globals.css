@@ -141,14 +141,14 @@ body {
   background-color: hsl(var(--primary));
 }
 
-.quiz-option-container.correct .checkmark, .quiz-option-container.correct:hover .checkmark {
+.quiz-option-container.correct .checkmark {
   background: #22c55e; /* green-500 */
 }
 .quiz-option-container.correct .checkmark:after {
   border-color: white;
 }
 
-.quiz-option-container.incorrect .checkmark, .quiz-option-container.incorrect:hover .checkmark {
+.quiz-option-container.incorrect .checkmark {
     background: #ef4444; /* red-500 */
     animation: shake 0.5s ease-in-out;
 }
