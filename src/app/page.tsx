@@ -27,12 +27,14 @@ export default function Home() {
             <p className="mb-4 text-muted-foreground">
               Head back to our course PDF to brush up on your knowledge.
             </p>
-            <Button asChild>
-              <Link href="https://docs.google.com/document/d/1-xCGlcx5ap2YinQ21jWvljQ8uWdof6NqCzATqJzfcJ4/edit?usp=drivesdk" target="_blank">
-                <BookOpen className="mr-2 h-4 w-4" />
-                Open Course PDF
-              </Link>
-            </Button>
+            <Link href="https://docs.google.com/document/d/1-xCGlcx5ap2YinQ21jWvljQ8uWdof6NqCzATqJzfcJ4/edit?usp=drivesdk" target="_blank" className="inline-block">
+              <button className="btn">
+                <span className="flex items-center justify-center">
+                  <BookOpen className="mr-2 h-4 w-4" />
+                  Get started
+                </span>
+              </button>
+            </Link>
           </CardContent>
         </Card>
       </div>

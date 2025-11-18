@@ -12,8 +12,6 @@ body {
     --foreground: 224 71% 4%;
     --card: 0 0% 100%;
     --card-foreground: 224 71% 4%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 224 71% 4%;
     --primary: 221 83% 53%; /* Professional Blue */
     --primary-foreground: 210 20% 98%;
     --secondary: 210 20% 94%;
@@ -71,7 +69,7 @@ body {
   }
 }
 
-/* Custom Quiz Button Styling from Uiverse.io by shreyasm-dev */
+/* Custom Quiz Button Styling */
 .quiz-option-container {
   display: block;
   position: relative;
@@ -84,7 +82,7 @@ body {
   border-radius: var(--radius);
   transition: all 0.2s ease-in-out;
   padding: 1rem;
-  padding-left: 3rem; /* 48px */
+  padding-left: 3.5rem; /* Increased padding */
 }
 
 .quiz-option-container input {
@@ -98,23 +96,23 @@ body {
 .checkmark {
   position: absolute;
   top: 50%;
-  left: 1rem; /* 16px */
+  left: 1rem;
   transform: translateY(-50%);
-  height: 1.5rem; /* 24px */
-  width: 1.5rem; /* 24px */
+  height: 1.5em; /* Adjusted size */
+  width: 1.5em; /* Adjusted size */
+  background-color: hsl(var(--muted));
   border-radius: 100%;
-  background: hsl(var(--muted) / 0.5);
-  box-shadow: 3px 3px 5px hsl(var(--muted) / 0.2),
+  box-shadow: 3px 3px 5px hsl(var(--muted-foreground)/0.2),
               -3px -3px 5px hsl(var(--card));
   transition-duration: 0.3s;
 }
 
 .quiz-option-container:hover .checkmark {
-  background: hsl(var(--muted));
+  background: hsl(var(--muted-foreground)/0.5);
 }
 
 .quiz-option-container input:checked ~ .checkmark {
-  box-shadow: inset 3px 3px 5px hsl(var(--muted) / 0.2),
+  box-shadow: inset 3px 3px 5px hsl(var(--muted-foreground)/0.2),
               inset -3px -3px 5px hsl(var(--card));
 }
 
@@ -129,28 +127,22 @@ body {
 }
 
 .quiz-option-container .checkmark:after {
-  left: 0.55rem;
-  top: 0.3rem;
-  width: 0.3rem;
-  height: 0.7rem;
+  left: 0.55em;
+  top: 0.3em;
+  width: 0.35em;
+  height: 0.7em;
   border: solid hsl(var(--primary-foreground));
-  border-width: 0 3px 3px 0;
+  border-width: 0 0.15em 0.15em 0;
   transform: rotate(45deg);
 }
 
+.quiz-option-container.selected .checkmark,
 .quiz-option-container input:checked ~ .checkmark {
-  background: hsl(var(--primary));
-}
-
-
-.quiz-option-container.selected {
-  background-color: hsl(var(--primary)/0.1);
+  background-color: hsl(var(--primary));
 }
 
 .quiz-option-container.correct .checkmark, .quiz-option-container.correct:hover .checkmark {
   background: #22c55e; /* green-500 */
-  box-shadow: inset 3px 3px 5px rgba(0,0,0,0.2),
-              inset -3px -3px 5px rgba(255,255,255,0.7);
 }
 .quiz-option-container.correct .checkmark:after {
   border-color: white;
@@ -159,8 +151,6 @@ body {
 .quiz-option-container.incorrect .checkmark, .quiz-option-container.incorrect:hover .checkmark {
     background: #ef4444; /* red-500 */
     animation: shake 0.5s ease-in-out;
-    box-shadow: inset 3px 3px 5px rgba(0,0,0,0.2),
-              inset -3px -3px 5px rgba(255,255,255,0.7);
 }
 
 .quiz-option-container.incorrect .checkmark:after {
@@ -174,9 +164,136 @@ body {
     transform: translate(-50%, -50%);
     width: auto;
     height: auto;
+    font-size: 1em;
 }
 
 .quiz-option-container.disabled {
   cursor: not-allowed;
   opacity: 0.7;
+}
+
+/* Custom PDF Button Styling from Uiverse.io by Codecite */ 
+.btn {
+  --fancy-button-gradient-0: hsl(var(--accent));
+  --fancy-button-gradient-50: hsl(var(--primary));
+  --fancy-button-gradient-100: hsl(var(--primary));
+  --fancy-button-inner-shadow-top: rgba(233, 209, 255, 0.2);
+  --fancy-button-inner-shadow-top-lg: rgba(9, 12, 60, 0.1);
+  --fancy-button-inner-shadow-bottom: rgba(137, 222, 246, 0.3);
+  --fancy-button-shine-top: #e9d1ff;
+  --fancy-button-shine-bottom: #adfff9;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 21px;
+  text-shadow: 0px 0.5px 0.5px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  margin: 0;
+  appearance: none;
+  border: none;
+  outline: none;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  z-index: 1;
+  border-radius: 25px;
+  color: #fff;
+  background-image: linear-gradient(
+    to bottom,
+    var(--fancy-button-gradient-0) 0%,
+    var(--fancy-button-gradient-50) 50%,
+    var(--fancy-button-gradient-100) 100%
+  );
+  box-shadow:
+    0px 4px 12px rgba(9, 12, 60, 0.15),
+    0px 2px 8px rgba(9, 12, 60, 0.15),
+    0px 1px 3px var(--fancy-button-inner-shadow-top-lg),
+    inset 0px 1px 1px var(--fancy-button-inner-shadow-top),
+    inset 0px -1px 3px var(--fancy-button-inner-shadow-bottom);
+}
+
+.btn:before,
+.btn:after {
+  content: "";
+  position: absolute;
+  border-radius: inherit;
+  will-change: transform;
+}
+
+.btn:before {
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--fancy-button-shine-top);
+  width: 96px;
+  height: 6px;
+  top: -3px;
+  opacity: 0.6;
+  filter: blur(6px);
+  transition: opacity 0.25s;
+}
+
+.btn:after {
+  inset: 0;
+  background-size: cover;
+  z-index: 2;
+  opacity: 0.3;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.btn span {
+  display: block;
+  padding: 12px 24px;
+  border-radius: inherit;
+  overflow: hidden;
+  position: relative;
+  background-image: linear-gradient(
+    to bottom,
+    var(--fancy-button-shine-top),
+    transparent 8px
+  );
+  background-position: 0 -6px;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+.btn span:before,
+.btn span:after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background-color: var(--fancy-button-shine-bottom);
+  transition:
+    opacity 0.25s,
+    transform 0.25s;
+  will-change: transform;
+}
+
+.btn span:before {
+  width: 92px;
+  height: 8px;
+  bottom: -4px;
+  opacity: 0.75;
+  filter: blur(6px);
+}
+
+.btn span:after {
+  width: 112px;
+  height: 1px;
+  bottom: 0;
+  opacity: 0.9;
+  filter: blur(1px);
+}
+
+.btn:hover span:before {
+  opacity: 0.8;
+}
+
+.btn:hover span:before {
+  transform: translateX(-50%) scale(1.25);
+}
+
+.btn:hover span:after {
+  opacity: 1;
 }
