@@ -17,7 +17,12 @@ async function playSound(url: string) {
     }
 
     if (context.state === 'suspended') {
-        await context.resume();
+        try {
+            await context.resume();
+        } catch (e) {
+            console.error("Could not resume AudioContext:", e);
+            return;
+        }
     }
 
     try {
@@ -29,6 +34,9 @@ async function playSound(url: string) {
         } else {
             // Fetch and cache the buffer
             const response = await fetch(url);
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
             const arrayBuffer = await response.arrayBuffer();
             audioBuffer = await context.decodeAudioData(arrayBuffer);
             audioBufferCache[url] = audioBuffer;
@@ -44,11 +52,11 @@ async function playSound(url: string) {
 }
 
 export function playCorrectSound() {
-    // A pleasant chime sound
-    playSound('https://actions.google.com/sounds/v1/cartoon/magic_chime.ogg');
+    // A pleasant chime sound from a reliable source (MP3 format)
+    playSound('https://cdn.pixabay.com/audio/2022/03/15/audio_a46a3011b2.mp3');
 }
 
 export function playIncorrectSound() {
-    // A classic error sound
-    playSound('https://actions.google.com/sounds/v1/errors/error_classic.ogg');
+    // A classic error sound from a reliable source (MP3 format)
+    playSound('https://cdn.pixabay.com/audio/2022/03/10/audio_c6347c7c4b.mp3');
 }
