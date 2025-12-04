@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-background p-4 md:p-8 space-y-8">
        <div className="text-center space-y-2">
-         <h1 className="text-4xl md:text-5xl font-bold tracking-tight font-heading text-gradient">
+         <h1 className="text-4xl md:text-5xl font-bold tracking-tight font-heading">
           WealthPath’s Exam
         </h1>
         <p className="text-muted-foreground text-lg max-w-2xl mx-auto">Test your financial literacy and take the first step on your journey to financial freedom.</p>
