@@ -42,7 +42,7 @@ export default function RootLayout({
           </main>
           <Toaster />
           <footer className="w-full bg-transparent mt-auto py-8">
-            <div className="max-w-4xl mx-auto px-4 text-center text-muted-foreground">
+            <div className="container mx-auto px-4 text-center text-muted-foreground">
               <p className="font-bold text-lg text-foreground">WealthPath</p>
               <p className="italic mb-4 text-sm">“A Journey Uniquely Yours”</p>
               <p className="text-sm">
