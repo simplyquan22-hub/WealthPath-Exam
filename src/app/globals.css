@@ -45,7 +45,7 @@ body {
 
 /* Custom Title Styling */
 .wealthpath-title {
-    font-family: 'Inter', sans-serif;
+    font-family: var(--font-montserrat), sans-serif;
     font-weight: 800;
     font-size: 2.4rem;
     line-height: 1.1;
