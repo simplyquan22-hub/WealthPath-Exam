@@ -46,9 +46,10 @@ body {
 /* Custom Title Styling */
 .wealthpath-title {
     font-family: var(--font-montserrat), sans-serif;
-    font-weight: 600;
+    font-weight: 800;
     font-size: 2.4rem;
     line-height: 1.1;
+    color: white;
 }
 
 
