@@ -8,7 +8,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-background p-4 md:p-8 space-y-8">
        <div className="text-center space-y-2">
-         <h1 className="wealthpath-title">
+         <h1 className="text-4xl font-extrabold leading-tight">
           WealthPath’s<br />
           Exam
         </h1>
