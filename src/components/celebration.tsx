@@ -40,7 +40,7 @@ const Celebration = () => {
             key={i}
             className="ripple"
             style={{
-              background: 'radial-gradient(circle, transparent, hsl(var(--primary)) 200%)',
+              background: 'radial-gradient(circle, transparent, #22c55e 200%)',
               animationDelay: `${i * 150}ms`,
             }}
           />
