@@ -3,70 +3,82 @@
 import React, { useState, useEffect, useMemo } from 'react';
 
 const PARTICLE_COUNT = 150;
-const SPREAD = 180;
-const GRAVITY = 0.5;
+const SPREAD = 80; // How far particles spread horizontally
+const GRAVITY = 0.8;
+
+interface Particle {
+  id: number;
+  style: React.CSSProperties;
+}
 
 const Celebration = () => {
-  const [particles, setParticles] = useState<Array<{ id: number; style: React.CSSProperties }>>([]);
-
-  const particleArray = useMemo(() => Array.from({ length: PARTICLE_COUNT }), []);
-
+  const [particles, setParticles] = useState<Particle[]>([]);
 
   useEffect(() => {
-    const newParticles = particleArray.map((_, i) => {
-      const angle = (Math.random() - 0.5) * SPREAD;
-      const velocity = Math.random() * 30 + 20;
-      const initialX = Math.cos(angle * (Math.PI / 180)) * velocity;
-      const initialY = Math.sin(angle * (Math.PI / 180)) * velocity;
+    const newParticles: Particle[] = Array.from({ length: PARTICLE_COUNT }).map((_, i) => {
+      const angle = (Math.random() - 0.5) * 2 * SPREAD;
+      const initialVelocity = Math.random() * 25 + 20; // Vertical velocity
       
-      const duration = Math.random() * 1000 + 800;
+      const x = Math.sin(angle * (Math.PI / 180)) * initialVelocity * (Math.random() * 2 + 1); // Horizontal velocity
+      const y = -initialVelocity * (Math.random() * 0.5 + 0.5);
+
+      const duration = Math.random() * 2000 + 3000; // 3-5 seconds
       const delay = Math.random() * 200;
 
       const colors = ['hsl(var(--primary))', 'hsl(var(--accent))', '#ffffff', '#fde047' /* yellow-300 */];
       const color = colors[Math.floor(Math.random() * colors.length)];
-      const size = Math.random() * 10 + 5;
+      
+      const width = Math.random() * 8 + 6;
+      const height = Math.random() * 8 + 6;
+      const rotation = Math.random() * 360;
+      const rotationSpeed = Math.random() * 720 - 360;
 
       return {
         id: i,
         style: {
-          '--initial-x': `${initialX}vw`,
-          '--initial-y': `${-initialY}vh`,
+          '--initial-x': `${x}vw`,
+          '--initial-y': `${y}vh`,
           '--duration': `${duration}ms`,
+          '--delay': `${delay}ms`,
           '--color': color,
-          width: `${size}px`,
-          height: `${size}px`,
-          animationDelay: `${delay}ms`,
-          animationDuration: `var(--duration)`,
+          '--rotation-start': `${rotation}deg`,
+          '--rotation-end': `${rotation + rotationSpeed}deg`,
+          width: `${width}px`,
+          height: `${height}px`,
+          backgroundColor: color,
         } as React.CSSProperties,
       };
     });
     setParticles(newParticles);
-  }, [particleArray]);
+  }, []);
 
   return (
     <>
       <style jsx>{`
-        @keyframes fall {
+        @keyframes fall-and-fade {
           0% {
-            transform: translate(0, 0) rotate(0deg);
+            transform: translate(0, 0) rotate(var(--rotation-start));
             opacity: 1;
           }
           100% {
-            transform: translate(var(--initial-x), calc(100vh - var(--initial-y))) rotate(720deg);
+            transform: translate(var(--initial-x), calc(100vh + 50px)) rotate(var(--rotation-end));
             opacity: 0;
           }
         }
         .particle {
           position: absolute;
-          top: 50%;
+          top: 0%;
           left: 50%;
-          border-radius: 50%;
-          background-color: var(--color);
-          animation: fall cubic-bezier(0.25, 0.5, 0.5, 1) forwards;
+          will-change: transform, opacity;
+          animation-name: fall-and-fade;
+          animation-timing-function: cubic-bezier(0.1, 0.5, 0.4, 1);
+          animation-fill-mode: forwards;
+          animation-duration: var(--duration);
+          animation-delay: var(--delay);
           pointer-events: none;
         }
       `}</style>
-      <div className="absolute inset-0 z-50 overflow-hidden">
+      <div className="absolute inset-0 z-50 overflow-hidden" aria-hidden="true">
         {particles.map(p => (
           <div key={p.id} className="particle" style={p.style} />
         ))}
