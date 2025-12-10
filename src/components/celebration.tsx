@@ -10,9 +10,8 @@ const Celebration = () => {
 
   useEffect(() => {
     const newParticles = Array.from({ length: PARTICLE_COUNT }).map((_, i) => {
-      const isStreamer = Math.random() > 0.7;
       const angle = Math.random() * 360;
-      const initialVelocity = Math.random() * 35 + 20; // Increased velocity
+      const initialVelocity = Math.random() * 35 + 20;
 
       const x = Math.cos(angle * (Math.PI / 180)) * SPREAD * (Math.random() + 0.5);
       const y = Math.sin(angle * (Math.PI / 180)) * SPREAD * (Math.random() + 0.5);
@@ -34,10 +33,9 @@ const Celebration = () => {
         '--color': color,
         '--rotation-start': `${rotation}deg`,
         '--rotation-end': `${rotation + rotationSpeed}deg`,
-        width: isStreamer ? '8px' : `${Math.random() * 6 + 4}px`,
-        height: isStreamer ? '50px' : `${Math.random() * 6 + 4}px`,
+        width: `${Math.random() * 8 + 6}px`,
+        height: `${Math.random() * 8 + 6}px`,
         backgroundColor: color,
-        borderRadius: isStreamer ? '0' : '50%',
         position: 'absolute',
         top: '50%',
         left: '50%',
