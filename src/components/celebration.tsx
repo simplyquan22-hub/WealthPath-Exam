@@ -4,18 +4,12 @@ import React, { useState, useEffect } from 'react';
 
 const PARTICLE_COUNT = 150;
 const SPREAD = 80;
-const GRAVITY = 0.5;
-
-interface Particle {
-  id: number;
-  style: React.CSSProperties;
-}
 
 const Celebration = () => {
-  const [particles, setParticles] = useState<Particle[]>([]);
+  const [particles, setParticles] = useState<React.ReactElement[]>([]);
 
   useEffect(() => {
-    const newParticles: Particle[] = Array.from({ length: PARTICLE_COUNT }).map((_, i) => {
+    const newParticles = Array.from({ length: PARTICLE_COUNT }).map((_, i) => {
       const isStreamer = Math.random() > 0.7;
       const angle = Math.random() * 360;
       const initialVelocity = Math.random() * 35 + 20; // Increased velocity
@@ -32,22 +26,31 @@ const Celebration = () => {
       const rotation = Math.random() * 360;
       const rotationSpeed = (Math.random() - 0.5) * 1080;
 
-      return {
-        id: i,
-        style: {
-          '--final-x': `${x}px`,
-          '--final-y': `${y}px`,
-          '--duration': `${duration}ms`,
-          '--delay': `${delay}ms`,
-          '--color': color,
-          '--rotation-start': `${rotation}deg`,
-          '--rotation-end': `${rotation + rotationSpeed}deg`,
-          width: isStreamer ? '8px' : `${Math.random() * 6 + 4}px`,
-          height: isStreamer ? '50px' : `${Math.random() * 6 + 4}px`,
-          backgroundColor: color,
-          borderRadius: isStreamer ? '0' : '50%',
-        } as React.CSSProperties,
+      const style: React.CSSProperties = {
+        '--final-x': `${x}px`,
+        '--final-y': `${y}px`,
+        '--duration': `${duration}ms`,
+        '--delay': `${delay}ms`,
+        '--color': color,
+        '--rotation-start': `${rotation}deg`,
+        '--rotation-end': `${rotation + rotationSpeed}deg`,
+        width: isStreamer ? '8px' : `${Math.random() * 6 + 4}px`,
+        height: isStreamer ? '50px' : `${Math.random() * 6 + 4}px`,
+        backgroundColor: color,
+        borderRadius: isStreamer ? '0' : '50%',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        willChange: 'transform, opacity',
+        animationName: 'confetti-burst',
+        animationTimingFunction: 'cubic-bezier(.17,.67,.83,.67)',
+        animationFillMode: 'forwards',
+        animationDuration: `var(--duration)`,
+        animationDelay: `var(--delay)`,
+        pointerEvents: 'none',
       };
+
+      return <div key={i} className="particle" style={style} />;
     });
     setParticles(newParticles);
   }, []);
@@ -69,23 +72,9 @@ const Celebration = () => {
             opacity: 0;
           }
         }
-        .particle {
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          will-change: transform, opacity;
-          animation-name: confetti-burst;
-          animation-timing-function: cubic-bezier(.17,.67,.83,.67);
-          animation-fill-mode: forwards;
-          animation-duration: var(--duration);
-          animation-delay: var(--delay);
-          pointer-events: none;
-        }
       `}</style>
       <div className="absolute inset-0 z-50 overflow-hidden" aria-hidden="true">
-        {particles.map(p => (
-          <div key={p.id} className="particle" style={p.style} />
-        ))}
+        {particles}
       </div>
     </>
   );
