@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const PARTICLE_COUNT = 150;
-const SPREAD = 80; // How far particles spread horizontally
-const GRAVITY = 0.8;
+const SPREAD = 60;
+const GRAVITY = 0.5;
 
 interface Particle {
   id: number;
@@ -16,35 +16,35 @@ const Celebration = () => {
 
   useEffect(() => {
     const newParticles: Particle[] = Array.from({ length: PARTICLE_COUNT }).map((_, i) => {
-      const angle = (Math.random() - 0.5) * 2 * SPREAD;
-      const initialVelocity = Math.random() * 25 + 20; // Vertical velocity
-      
-      const x = Math.sin(angle * (Math.PI / 180)) * initialVelocity * (Math.random() * 2 + 1); // Horizontal velocity
-      const y = -initialVelocity * (Math.random() * 0.5 + 0.5);
+      const isStreamer = Math.random() > 0.5;
+      const angle = Math.random() * 360;
+      const initialVelocity = Math.random() * 20 + 15;
 
-      const duration = Math.random() * 2000 + 3000; // 3-5 seconds
+      const x = Math.cos(angle * (Math.PI / 180)) * initialVelocity * 0.8;
+      const y = Math.sin(angle * (Math.PI / 180)) * initialVelocity;
+      
+      const duration = Math.random() * 2000 + 3000;
       const delay = Math.random() * 200;
 
       const colors = ['hsl(var(--primary))', 'hsl(var(--accent))', '#ffffff', '#fde047' /* yellow-300 */];
       const color = colors[Math.floor(Math.random() * colors.length)];
       
-      const width = Math.random() * 8 + 6;
-      const height = Math.random() * 8 + 6;
       const rotation = Math.random() * 360;
-      const rotationSpeed = Math.random() * 720 - 360;
+      const rotationSpeed = Math.random() * 1080 - 540;
 
       return {
         id: i,
         style: {
           '--initial-x': `${x}vw`,
           '--initial-y': `${y}vh`,
+          '--final-y': `${y + 60}vh`,
           '--duration': `${duration}ms`,
           '--delay': `${delay}ms`,
           '--color': color,
           '--rotation-start': `${rotation}deg`,
           '--rotation-end': `${rotation + rotationSpeed}deg`,
-          width: `${width}px`,
-          height: `${height}px`,
+          width: isStreamer ? '6px' : `${Math.random() * 8 + 8}px`,
+          height: isStreamer ? '30px' : `${Math.random() * 8 + 8}px`,
           backgroundColor: color,
         } as React.CSSProperties,
       };
@@ -55,23 +55,26 @@ const Celebration = () => {
   return (
     <>
       <style jsx>{`
-        @keyframes fall-and-fade {
+        @keyframes pop-and-fall {
           0% {
             transform: translate(0, 0) rotate(var(--rotation-start));
             opacity: 1;
           }
+          20% {
+            opacity: 1;
+          }
           100% {
-            transform: translate(var(--initial-x), calc(100vh + 50px)) rotate(var(--rotation-end));
+            transform: translate(var(--initial-x), var(--final-y)) rotate(var(--rotation-end));
             opacity: 0;
           }
         }
         .particle {
           position: absolute;
-          top: 0%;
+          top: 50%;
           left: 50%;
           will-change: transform, opacity;
-          animation-name: fall-and-fade;
-          animation-timing-function: cubic-bezier(0.1, 0.5, 0.4, 1);
+          animation-name: pop-and-fall;
+          animation-timing-function: cubic-bezier(0.1, 0.9, 0.4, 1);
           animation-fill-mode: forwards;
           animation-duration: var(--duration);
           animation-delay: var(--delay);
